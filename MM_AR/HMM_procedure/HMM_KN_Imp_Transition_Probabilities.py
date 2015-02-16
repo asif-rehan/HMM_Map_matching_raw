@@ -51,8 +51,8 @@ class TransitionWeight(object):
         
         sd = float("inf")
         try:
-            for i in range(0,1):
-                for j in range(0,1):
+            for i in [0,1]:
+                for j in [0,1]:
                     #this try-except block catches KeyError in NX Dijkstra path
                     try:
                         #print "cp1_e_n_d[i]['node']", cp1_e_n_d[i]['node']
@@ -80,9 +80,7 @@ class TransitionWeight(object):
                                                'weight')                       
                         shortest_path= list([(cand_pt1.cand_pt_easting,
                                               cand_pt1.cand_pt_northing)]
-                                       + [cp1_e_n_d[i]['node']] 
-                                       + end_to_end_seq[:] 
-                                       + [cp1_e_n_d[j]['node']] + 
+                                       + end_to_end_seq[:] +
                                        [(cand_pt2.cand_pt_easting,
                                          cand_pt2.cand_pt_northing)])
             if shortest_path_length == float('inf'):

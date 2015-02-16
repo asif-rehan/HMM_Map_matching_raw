@@ -78,12 +78,12 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                 #print 'print len(points)',len(points)
                 #print 'len p1.candidate points', len(p1.candidate_points)
                 
-                lnHeadProbVec = np.empty((1,1)) #initiate as list. from 2nd GPS 
+                lnHeadProbVec = np.empty(shape=[0, 1]) #initiate as list. from 2nd GPS 
                                                 #point, becomes NumPy array
                 WaveHead = []
                 WaveHead_dist = []            
                 for cand_pt_0 in points[record].candidate_points:
-                    np.append(lnHeadProbVec,
+                    lnHeadProbVec = np.append(lnHeadProbVec,
                               [[np.log(cand_pt_0.cand_pt_emission_prob)]], 
                               axis = 0)
                     #WaveHead.append(None)
