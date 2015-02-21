@@ -193,15 +193,21 @@ class Validate(object):
                    scale_units='xy', angles='xy', scale=1)
     
     
+
+    def df_lat_lon2_utm_lst(self, chunk):
+        utm_pts = map(lat_long_to_UTM_point, 
+            chunk['longitude'], 
+            chunk['latitude'])
+        
+        return utm_pts
+
     def plot_raw_gps_seq(self, chunk, ax, fig, legend='ro', label=None):
         '''
         fig = matplotlib.pyplot.figure()
         ax = matplotlib.pyplot.axes()
         '''
-        utm_pts = map(lat_long_to_UTM_point, 
-                      chunk['longitude'],
-                      chunk['latitude'])
-        (easting, northing) = zip(*utm_pts)
+        utm_pts = self.df_lat_lon2_utm_lst(chunk)
+        easting, northing = self.unzip_map_match_seq(utm_pts)
         ax.plot(easting, northing, legend, label=label)
         plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
           fancybox=True, shadow=True, ncol=5, fontsize='x-small')

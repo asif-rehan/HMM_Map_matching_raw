@@ -92,7 +92,7 @@ class TransitionWeight(object):
             #                   cand_pt2.cand_pt_northing)
             shortest_path = [None]
             shortest_path_length = float('inf')          
-        return shortest_path_length, shortest_path
+        return sd, shortest_path
     
     def cand_pt_UTM_to_LongLat(self, cand_pt_easting, cand_pt_northing):
         '''

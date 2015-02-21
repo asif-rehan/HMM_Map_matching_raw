@@ -11,7 +11,6 @@ import sys
 import traceback 
 import time
 from matplotlib import pyplot as plt
-import validation
 
 def check_consistency(file_lst):
     
@@ -31,7 +30,7 @@ def get_ckt_len(rt):
                  'yl': 9991.1998375839721, 
                  'gr': 10439.471668776407, 
                  'or': 5107.5327282622065, 
-                 'or': 7138.3470176287283}
+                 'rd': 7138.3470176287283}
     return lengths_m[rt]
 
 def diagnostic_plot(mm_seq, label, out_fldr, src_file, freq):
@@ -46,6 +45,7 @@ def diagnostic_plot(mm_seq, label, out_fldr, src_file, freq):
     plt.xlim(min(easting)-200, 200+max(easting))
     plt.ylim(min(northing)-200, 200+max(northing))
     plt.savefig(os.path.join(out_fldr, src_file[:-4]+str(freq)+'.png'))
+    val.plot_quiver_seq(mm_seq, ax, fig)
     return None
 
 def err_val(src_fldr, src_file, out_fldr, des_freq=None):
@@ -118,12 +118,12 @@ if __name__ == "__main__":
       r'Py Codes\HMM_Krumm_Newson_Implementation\MM_AR_validation\val_dataset')
     src_files = [f for f in os.listdir(src_fldr)   \
                  if os.path.isfile(os.path.join(src_fldr, f))]
-    src_files = src_files[25:26]
+    src_files = src_files[0:6]
     #print err_val(src_fldr, src_file, out_fldr, des_freq=900)
     try:
         sys.stdout = open(os.path.join(out_fldr, "sys.stdout.txt"), 'w')
         print quant_score(src_files, src_fldr, out_fldr, 
-                      des_freq_lst=[600, 500])
+                      des_freq_lst=[60, 45, 30, 20, 10])
     finally:
         sys.stdout.close()
         sys.stderr = sys.__stderr__
