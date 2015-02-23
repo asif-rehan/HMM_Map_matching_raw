@@ -120,7 +120,7 @@ if __name__ == "__main__":
       r'Py Codes\HMM_Krumm_Newson_Implementation\MM_AR_validation\val_dataset')
     src_files = [f for f in os.listdir(src_fldr)   \
                  if os.path.isfile(os.path.join(src_fldr, f))]
-    src_files = src_files[53:54]
+    src_files = src_files[40:41]
     #print err_val(src_fldr, src_file, out_fldr, des_freq=900)
     try:
         sys.stdout = open(os.path.join(out_fldr, "sys.stdout.txt"), 'w')

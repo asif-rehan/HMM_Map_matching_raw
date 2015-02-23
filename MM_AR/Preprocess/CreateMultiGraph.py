@@ -28,7 +28,7 @@ utm_shp_path = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
 #LineString_Road_Network_UTM.shp" 
 
 G = CreateMultiGraph(utm_shp_path)
-pickle.dump(G, open('MultiGraph.p', 'wb'))
+pickle.dump(G, open('../Relevant_files/MultiGraph.p', 'wb'))
 
 #print nx.dijkstra_path(G, (732805.0271117099, 4623614.515877712),
 #                              (729658.6308007092, 4630691.33944068), 'weight')
