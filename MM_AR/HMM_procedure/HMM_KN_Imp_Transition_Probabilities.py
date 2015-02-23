@@ -85,7 +85,7 @@ class TransitionWeight(object):
                                    + end_to_end_seq[:] +
                                    [(cand_pt2.cand_pt_easting,
                                      cand_pt2.cand_pt_northing)])
-        if shortest_path_length == float('inf'):
+        if sd == float('inf'):
             shortest_path = [(None, None)]        
         #except nx.exception.NetworkXNoPath:
             #print "cand_pt_1",(cand_pt1.cand_pt_easting, 
