@@ -50,48 +50,50 @@ class TransitionWeight(object):
         #e_n_d end_nodes_dist
         
         sd = float("inf")
-        try:
-            for i in [0,1]:
-                for j in [0,1]:
-                    #this try-except block catches KeyError in NX Dijkstra path
-                    try:
-                        #print "cp1_e_n_d[i]['node']", cp1_e_n_d[i]['node']
-                        #print "cp1_e_n_d[j]['node']", cp1_e_n_d[j]['node']
-                        end_to_end_dist = nx.shortest_path_length(
-                                            G, cp1_e_n_d[i]['node'], 
-                                               cp2_e_n_d[j]['node'], 'weight')
-                    except KeyError:
-                        #print 'KeyError'
-                        #print "cp1_e_n_d[i]['node']", cp1_e_n_d[i]['node']
-                        #print "cp1_e_n_d[j]['node']", cp1_e_n_d[j]['node']
-                        end_to_end_dist = float('inf')
-                    #distance between nearest road intersections for each of 
-                    #the cand points                    
-                    shortest_path_length = (cp1_e_n_d[i]['dist']
-                                            + end_to_end_dist
-                                            + cp2_e_n_d[j]['dist'])
-                    #total shortest path between cand points considering the 
-                    #pair of nearest intersection
-                    if shortest_path_length < sd:
-                        sd = shortest_path_length
-                        end_to_end_seq = nx.shortest_path(G, 
-                                               cp1_e_n_d[i]['node'], 
-                                               cp2_e_n_d[j]['node'], 
-                                               'weight')                       
-                        shortest_path= list([(cand_pt1.cand_pt_easting,
-                                              cand_pt1.cand_pt_northing)]
-                                       + end_to_end_seq[:] +
-                                       [(cand_pt2.cand_pt_easting,
-                                         cand_pt2.cand_pt_northing)])
-            if shortest_path_length == float('inf'):
-                shortest_path = [None]            
-        except nx.exception.NetworkXNoPath:
+        
+        for i in [0,1]:
+            for j in [0,1]:
+                #this try-except block catches KeyError in NX Dijkstra path
+                try:
+                    #print "cp1_e_n_d[i]['node']", cp1_e_n_d[i]['node']
+                    #print "cp1_e_n_d[j]['node']", cp1_e_n_d[j]['node']
+                    end_to_end_dist = nx.shortest_path_length(
+                                        G, cp1_e_n_d[i]['node'], 
+                                           cp2_e_n_d[j]['node'], 'weight')
+                except KeyError:
+                    print 'KeyError'
+                    print "cp1_e_n_d[i]['node']", cp1_e_n_d[i]['node']
+                    print "cp1_e_n_d[j]['node']", cp1_e_n_d[j]['node']
+                    end_to_end_dist = float('inf')
+                except nx.exception.NetworkXNoPath:
+                    end_to_end_dist = float('inf')
+                #distance between nearest road intersections for each of 
+                #the cand points                    
+                shortest_path_length = (cp1_e_n_d[i]['dist']
+                                        + end_to_end_dist
+                                        + cp2_e_n_d[j]['dist'])
+                #total shortest path between cand points considering the 
+                #pair of nearest intersection
+                if shortest_path_length < sd:
+                    sd = shortest_path_length
+                    end_to_end_seq = nx.shortest_path(G, 
+                                           cp1_e_n_d[i]['node'], 
+                                           cp2_e_n_d[j]['node'], 
+                                           'weight')                       
+                    shortest_path= list([(cand_pt1.cand_pt_easting,
+                                          cand_pt1.cand_pt_northing)]
+                                   + end_to_end_seq[:] +
+                                   [(cand_pt2.cand_pt_easting,
+                                     cand_pt2.cand_pt_northing)])
+        if shortest_path_length == float('inf'):
+            shortest_path = [(None, None)]        
+        #except nx.exception.NetworkXNoPath:
             #print "cand_pt_1",(cand_pt1.cand_pt_easting, 
             #                   cand_pt1.cand_pt_northing)
             #print "cand_pt_2",(cand_pt2.cand_pt_easting, 
             #                   cand_pt2.cand_pt_northing)
-            shortest_path = [None]
-            shortest_path_length = float('inf')          
+        #    shortest_path = [None]
+        #    shortest_path_length = float('inf')          
         return sd, shortest_path
     
     def cand_pt_UTM_to_LongLat(self, cand_pt_easting, cand_pt_northing):

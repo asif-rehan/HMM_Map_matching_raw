@@ -69,7 +69,7 @@ def err_val(src_fldr, src_file, out_fldr, des_freq=None):
                         timestamp_col_id=0,
                         gps_mean=0, gps_std_dev=7, circ_radius=30)
     print mm_out
-    diagnostic_plot(mm_out[2], src_file[:-4], out_fldr, src_file, des_freq)
+    #diagnostic_plot(mm_out[2], src_file[:-4], out_fldr, src_file, des_freq)
     trav_len = get_ckt_len(out_file[:2])
     err = (mm_out[1] - trav_len)/trav_len*100
     err = round(err, 2)
@@ -98,7 +98,7 @@ def quant_score(src_files, src_fldr, out_fldr, des_freq_lst,):
             exc_type, exc_value, exc_traceback = sys.exc_info()
             print("*** print_exception:")
             traceback.print_exception(exc_type, exc_value, exc_traceback,
-                              limit=2, file=sys.stdout)
+                              limit=None, file=sys.stdout)
             continue
         finally:
             output_file ='output_{0}.csv'.format(time.strftime('%Y%m%dT%H%M%S', 
@@ -118,12 +118,12 @@ if __name__ == "__main__":
       r'Py Codes\HMM_Krumm_Newson_Implementation\MM_AR_validation\val_dataset')
     src_files = [f for f in os.listdir(src_fldr)   \
                  if os.path.isfile(os.path.join(src_fldr, f))]
-    src_files = src_files[0:6]
+    src_files = src_files[9:10]
     #print err_val(src_fldr, src_file, out_fldr, des_freq=900)
     try:
         sys.stdout = open(os.path.join(out_fldr, "sys.stdout.txt"), 'w')
         print quant_score(src_files, src_fldr, out_fldr, 
-                      des_freq_lst=[60, 45, 30, 20, 10])
+                      des_freq_lst=[60])#, 45, 30, 20, 10, None])
     finally:
         sys.stdout.close()
         sys.stderr = sys.__stderr__
