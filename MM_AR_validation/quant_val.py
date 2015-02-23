@@ -11,6 +11,7 @@ import sys
 import traceback 
 import time
 from matplotlib import pyplot as plt
+from MM_AR_validation.validation import Validate
 
 def check_consistency(file_lst):
     
@@ -34,8 +35,8 @@ def get_ckt_len(rt):
     return lengths_m[rt]
 
 def diagnostic_plot(mm_seq, label, out_fldr, src_file, freq, out_file_path):
-    from validation import Validate as Val
-    val = Val("")
+    
+    val = Validate("")
     fig = plt.figure()
     ax = plt.axes()
     
