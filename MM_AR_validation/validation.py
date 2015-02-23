@@ -137,8 +137,8 @@ class Validate(object):
         
     def plot_roadnetwork(self, ax, fig, select=False, color='k',
             road_shp_file = os.path.join(os.path.dirname(__file__), os.pardir,
-                    r"MM_AR/Relevant_files/LineString_Road_Network_UTM.shp")
-                         ):
+                    r"MM_AR/Relevant_files/LineString_Road_Network_UTM.shp"),
+                         zorder=1):
         '''
         plots the road network with matplotlib
         fig = matplotlib.pyplot.figure()
@@ -155,17 +155,19 @@ class Validate(object):
             for i in records:                
                 line = road_shp[i]['geometry']['coordinates']
                 (line_easting, line_northing) = zip(*line)
-                ax.plot(line_easting, line_northing, color=color, linewidth=0.5)
+                ax.plot(line_easting, line_northing, color=color,
+                        linewidth=0.5, zorder=zorder)
                         
     def plot_map_matched_path_points(self, map_matched_seq, 
-                                     ax, fig, label=None):
+                                     ax, fig, label=None, zorder=3):
         '''
         fig = matplotlib.pyplot.figure()
         ax = matplotlib.pyplot.axes()
         '''
         (easting, northing) = zip(*map_matched_seq)
         plt.scatter(easting, northing, label=label, 
-                c=range(len(map_matched_seq)), cmap=plt.get_cmap("hot"))
+                c=range(len(map_matched_seq)), cmap=plt.get_cmap("hot"),
+                zorder=zorder)
         plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
           fancybox=True, shadow=True, ncol=5, fontsize='x-small')
         plt.xlim(min(easting)-200, 200+max(easting))
@@ -176,7 +178,7 @@ class Validate(object):
         return easting, northing
     
     
-    def plot_quiver_seq(self, map_match_seq, ax, fig):
+    def plot_quiver_seq(self, map_match_seq, ax, fig, zorder=2):
         '''
         only works when easting, northing both scaled between 0 to 1
         So may not be visualized with other methods on same axis due to 
@@ -190,7 +192,7 @@ class Validate(object):
         ax.quiver(X[:-1, 0], X[:-1, 1], 
                    X[1:, 0] - X[:-1, 0], 
                    X[1:, 1] - X[:-1,1], 
-                   scale_units='xy', angles='xy', scale=1)
+                   scale_units='xy', angles='xy', scale=1, zorder=zorder)
     
     
 
@@ -201,7 +203,8 @@ class Validate(object):
         
         return utm_pts
 
-    def plot_raw_gps_seq(self, chunk, ax, fig, legend='ro', label=None):
+    def plot_raw_gps_seq(self, chunk, ax, fig, legend='ro', label=None, 
+                         zorder=4):
         '''
         fig = matplotlib.pyplot.figure()
         ax = matplotlib.pyplot.axes()

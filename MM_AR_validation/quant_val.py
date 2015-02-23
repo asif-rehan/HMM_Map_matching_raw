@@ -33,17 +33,17 @@ def get_ckt_len(rt):
                  'rd': 7138.3470176287283}
     return lengths_m[rt]
 
-def diagnostic_plot(mm_seq, label, out_fldr, src_file, freq):
+def diagnostic_plot(mm_seq, label, out_fldr, src_file, freq, out_file_path):
     from validation import Validate as Val
     val = Val("")
     fig = plt.figure()
     ax = plt.axes()
     
-    val.plot_map_matched_path_points(mm_seq, ax, fig, label)
     val.plot_roadnetwork( ax, fig)
-    easting, northing = zip(*mm_seq)
-    plt.xlim(min(easting)-200, 200+max(easting))
-    plt.ylim(min(northing)-200, 200+max(northing))
+    val.plot_quiver_seq(mm_seq, ax, fig)
+    val.plot_map_matched_path_points(mm_seq, ax, fig, label=src_file[0:2])
+    chunk = pd.read_csv(out_file_path)
+    val.plot_raw_gps_seq(chunk, ax, fig)
     plt.savefig(os.path.join(out_fldr, src_file[:-4]+str(freq)+'.png'))
     val.plot_quiver_seq(mm_seq, ax, fig)
     return None
@@ -61,7 +61,8 @@ def err_val(src_fldr, src_file, out_fldr, des_freq=None):
     
     jump = int(round(des_freq/med_freq_fl))
     out_file = src_file[:-4]+'_freq{}'.format(des_freq)+'.csv'
-    df[::jump].to_csv(os.path.join(out_fldr, out_file))
+    out_file_path = os.path.join(out_fldr, out_file)
+    df[::jump].to_csv(out_file_path)
 
     mm_out = MM_main.Viterbi(os.path.join(out_fldr, out_file), 
                         lon_col_id=1, 
@@ -69,7 +70,8 @@ def err_val(src_fldr, src_file, out_fldr, des_freq=None):
                         timestamp_col_id=0,
                         gps_mean=0, gps_std_dev=7, circ_radius=30)
     print mm_out
-    #diagnostic_plot(mm_out[2], src_file[:-4], out_fldr, src_file, des_freq)
+    diagnostic_plot(mm_out[2], src_file[:-4], out_fldr, src_file, des_freq,
+                    out_file_path)
     trav_len = get_ckt_len(out_file[:2])
     err = (mm_out[1] - trav_len)/trav_len*100
     err = round(err, 2)
@@ -118,7 +120,7 @@ if __name__ == "__main__":
       r'Py Codes\HMM_Krumm_Newson_Implementation\MM_AR_validation\val_dataset')
     src_files = [f for f in os.listdir(src_fldr)   \
                  if os.path.isfile(os.path.join(src_fldr, f))]
-    src_files = src_files[27:28]
+    src_files = src_files[53:54]
     #print err_val(src_fldr, src_file, out_fldr, des_freq=900)
     try:
         sys.stdout = open(os.path.join(out_fldr, "sys.stdout.txt"), 'w')
