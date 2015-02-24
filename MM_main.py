@@ -11,9 +11,9 @@ import os
 this_dir =  os.path.dirname(__file__)
 
 
-sys.stdout=open('output_{0}_{1}.txt'.format(time.strftime('%Y-%m-%dT%H.%M.%S', 
-                                            time.localtime()), 
-                                             'orng_20141014'), 'w')
+#sys.stdout=open('output_{0}_{1}.txt'.format(time.strftime('%Y-%m-%dT%H.%M.%S', 
+#                                            time.localtime()), 
+#                                             'orng_20141014'), 'w')
 
 start_time = time.time()
 def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id, 
@@ -21,7 +21,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
             road_net_shp = os.path.join(this_dir,
                     "MM_AR/Relevant_files/LineString_Road_Network_UTM.shp"),
             road_net_multigraph_pickled = os.path.join(this_dir,
-                                            "MM_AR/Preprocess/MultiGraph.p"),
+                                        r"MM_AR/Relevant_files/MultiGraph.p"),
             beta=1): 
     '''
     Viterbi decoder of optimum sequence of the candidate road segments.
@@ -258,5 +258,5 @@ if __name__ == '__main__':
         beta=1)
     print out
     print "--- {0} seconds ---".format(time.time() - start_time)
-sys.stdout.close()
-sys.stderr = sys.__stderr__
+#sys.stdout.close()
+#sys.stderr = sys.__stderr__

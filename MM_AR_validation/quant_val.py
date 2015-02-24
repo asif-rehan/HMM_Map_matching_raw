@@ -126,7 +126,7 @@ if __name__ == "__main__":
     try:
         sys.stdout = open(os.path.join(out_fldr, "sys.stdout.txt"), 'w')
         print quant_score(src_files, src_fldr, out_fldr, 
-                      des_freq_lst=[10])#, 45, 30, 20, 10, None])
+                      des_freq_lst=[60])#, 45, 30, 20, 10, None])
     finally:
         sys.stdout.close()
         sys.stderr = sys.__stderr__
