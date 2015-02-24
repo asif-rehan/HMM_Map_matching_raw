@@ -254,7 +254,7 @@ if __name__ == '__main__':
         lon_col_id=5, lat_col_id=4, timestamp_col_id=9,
         gps_mean = 0, gps_std_dev=7, circ_radius=30,
         road_net_shp = "MM_AR/Relevant_files/LineString_Road_Network_UTM.shp",
-        road_net_multigraph_pickled = "MM_AR/Preprocess/MultiGraph.p",
+        road_net_multigraph_pickled = "MM_AR/Relevant_files/MultiGraph.p",
         beta=1)
     print out
     print "--- {0} seconds ---".format(time.time() - start_time)
