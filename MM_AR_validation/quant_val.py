@@ -5,6 +5,7 @@ Created on Feb 5, 2015
 '''
 import MM_main
 import os
+import numpy as np
 import pandas as pd
 from collections import Counter
 import sys
@@ -35,18 +36,16 @@ def get_ckt_len(rt):
     return lengths_m[rt]
 
 def diagnostic_plot(mm_seq, label, out_fldr, src_file, freq, out_file_path):
-    
     val = Validate("")
     fig = plt.figure()
     ax = plt.axes()
-    
     val.plot_roadnetwork( ax, fig)
     val.plot_quiver_seq(mm_seq, ax, fig)
     val.plot_map_matched_path_points(mm_seq, ax, fig, label=src_file[0:2])
     chunk = pd.read_csv(out_file_path)
     val.plot_raw_gps_seq(chunk, ax, fig)
     plt.savefig(os.path.join(out_fldr, src_file[:-4]+str(freq)+'.png'))
-    val.plot_quiver_seq(mm_seq, ax, fig)
+    plt.close()
     return None
 
 def err_val(src_fldr, src_file, out_fldr, des_freq=None):
@@ -63,7 +62,15 @@ def err_val(src_fldr, src_file, out_fldr, des_freq=None):
     jump = int(round(des_freq/med_freq_fl))
     out_file = src_file[:-4]+'_freq{}'.format(des_freq)+'.csv'
     out_file_path = os.path.join(out_fldr, out_file)
-    df[::jump].to_csv(out_file_path)
+    
+    selected = df[::jump]
+    del df
+    #now add the first sampled point to the end with extended timestamp
+    #to keep the circuit from discontinuity between end to start points
+    selected = selected.append(selected.head(1))
+    selected.tail(1).index.values[0] = selected[-2:-1].index.values[0] +   \
+                                                np.timedelta64(des_freq, 's')
+    selected.to_csv(out_file_path)
 
     mm_out = MM_main.Viterbi(os.path.join(out_fldr, out_file), 
                         lon_col_id=1, 
@@ -76,7 +83,7 @@ def err_val(src_fldr, src_file, out_fldr, des_freq=None):
     trav_len = get_ckt_len(out_file[:2])
     err = (mm_out[1] - trav_len)/trav_len*100
     err = round(err, 2)
-    score = 100 - abs(err)
+    score = round((100 - abs(err)), 2)
     return err, score, med_freq_fl
 
 def quant_score(src_files, src_fldr, out_fldr, des_freq_lst,):
