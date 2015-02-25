@@ -83,7 +83,7 @@ def err_val(src_fldr, src_file, out_fldr, des_freq=None):
     trav_len = get_ckt_len(out_file[:2])
     err = (mm_out[1] - trav_len)/trav_len*100
     err = round(err, 2)
-    score = 100 - abs(err)
+    score = round((100 - abs(err)), 2)
     return err, score, med_freq_fl
 
 def quant_score(src_files, src_fldr, out_fldr, des_freq_lst,):
