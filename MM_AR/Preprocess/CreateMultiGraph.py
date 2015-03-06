@@ -16,8 +16,8 @@ def CreateMultiGraph(utm_shp_path):
             G.add_edge(strt, end, weight = length_meter)
                                         
     '''print len(G), G.number_of_nodes(),G.number_of_edges()
-    #nx.draw_graphviz(G)                    
-    #plt.show()'''
+    nx.draw_graphviz(G)                    
+    plt.show()'''
     return G
 
 def CreateMultiDiGraph(utm_shp_path):
