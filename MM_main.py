@@ -21,7 +21,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
             road_net_shp = os.path.join(this_dir,
                     "MM_AR/Relevant_files/LineString_Road_Network_UTM.shp"),
             road_net_multigraph_pickled = os.path.join(this_dir,
-                                        r"MM_AR/Relevant_files/MultiDiGraph.p"),
+                                        r"MM_AR/Relevant_files/MultiGraph.p"),
             beta=1): 
     '''
     Viterbi decoder of optimum sequence of the candidate road segments.

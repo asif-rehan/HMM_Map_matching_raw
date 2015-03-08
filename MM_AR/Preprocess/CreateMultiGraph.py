@@ -50,8 +50,8 @@ utm_shp_path = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
 #LineString_Road_Network_UTM.shp" 
 
 if __name__ == '__main__':
-    #G = CreateMultiGraph(utm_shp_path)
-    #pickle.dump(G, open('../Relevant_files/MultiGraph.p', 'wb'))
+    G = CreateMultiGraph(utm_shp_path)
+    pickle.dump(G, open('../Relevant_files/MultiGraph.p', 'wb'))
     MDG = CreateMultiDiGraph(utm_shp_path)
     pickle.dump(MDG, open('../Relevant_files/MultiDiGraph.p', 'wb'))
     #print nx.dijkstra_path(G, (732805.0271117099, 4623614.515877712),
