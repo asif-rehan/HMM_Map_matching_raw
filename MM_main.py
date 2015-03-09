@@ -56,7 +56,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
     points = []    
     try:
         for GPSrecord in PointGenerator:
-            print 'rec ', record
+            #print 'rec ', record
             if record == 0:   
                 #print "IF starts"
                 #print 'rec ', record     
@@ -75,8 +75,8 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                 
                 points.append(p1)
                 
-                print 'print len(points)',len(points)
-                print 'len p1.candidate points', len(p1.candidate_points)
+                #print 'print len(points)',len(points)
+                #print 'len p1.candidate points', len(p1.candidate_points)
                 
                 lnHeadProbVec = np.empty(shape=[0, 1]) #initiate as list. from 2nd GPS 
                                                 #point, becomes NumPy array
@@ -90,9 +90,9 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                     WaveHead.append([(cand_pt_0.cand_pt_easting, 
                                      cand_pt_0.cand_pt_northing)])
                     WaveHead_dist.append(0)
-                    print (cand_pt_0.cand_pt_easting, cand_pt_0.cand_pt_northing)
-                print "lnHeadProbVec", lnHeadProbVec
-                print "WaveHead", WaveHead
+                    #print (cand_pt_0.cand_pt_easting, cand_pt_0.cand_pt_northing)
+                #print "lnHeadProbVec", lnHeadProbVec
+                #print "WaveHead", WaveHead
                 #print 'IF END'
             
             elif record > 0:
@@ -109,12 +109,13 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                                circ_radius= circ_radius, 
                                road_net_shp = road_net_shp )  
                 points.append(p2)
-                for p in points:
-                    print 'GPS point', p.gps_easting, p.gps_northing
+                #for p in points:
+                    #print 'GPS point', p.gps_easting, p.gps_northing
                 row_len = len(points[0].candidate_points)
                 col_len = len(points[1].candidate_points)
-                print "(row_len, col_len) = (", row_len, col_len, ")"
+                #print "(row_len, col_len) = (", row_len, col_len, ")"
                 
+                '''
                 for pos in xrange(row_len):
                     print ('points[0]',
                     points[0].candidate_points[pos].cand_pt_easting,
@@ -123,6 +124,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                     print ('points[1]',
                     points[1].candidate_points[pos].cand_pt_easting,
                             points[1].candidate_points[pos].cand_pt_northing)
+                '''
                 #check and remove the points with no candidate points or if it is 
                 # the same as the immediately previous point
                 if points[0] == points[1] or col_len == 0:
@@ -132,7 +134,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                     continue
                 
                 #print (p2.__dict__)          
-                print 'len p2.candidate points', len(p2.candidate_points)
+                #print 'len p2.candidate points', len(p2.candidate_points)
                 #print 'print len(points)', "*"*len(points)
                 
                 TransitionObjMatrix = np.empty_like([[0]*col_len]*row_len, 
@@ -140,10 +142,10 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                 TransWeightMatrix = np.empty([row_len,col_len], dtype = float)
                 lnEmissionProbMatrix = np.empty(col_len, dtype=float)
                 #array(cand_pt_t_minus_1  X cand_pt_t)
-                print "len(points[1].candidate_points) = ",  \
-                                len(points[1].candidate_points)
-                print "len(points[0].candidate_points) = ",  \
-                                len(points[0].candidate_points)
+                #print "len(points[1].candidate_points) = ",  \
+                #                len(points[1].candidate_points)
+                #print "len(points[0].candidate_points) = ",  \
+                #                len(points[0].candidate_points)
                 i = 0
                 for cand_pt_t in points[1].candidate_points:
                     
@@ -171,8 +173,8 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                     points[1] = points[0] 
                     continue
                 
-                print "TransWeightMatrix",TransWeightMatrix
-                print record, "EmissionProbMatrix",lnEmissionProbMatrix
+                #print "TransWeightMatrix",TransWeightMatrix
+                #print record, "EmissionProbMatrix",lnEmissionProbMatrix
                 try:
                     
                     sum_row_wt = np.sum(TransWeightMatrix, axis=1)
@@ -193,18 +195,18 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                     print RuntimeWarning
                 #    print 'p=', p, 'record=', record
                 
-                print "log_sum_row_wt", ln_sum_row_wt
-                print "lnTransProbMatrix", lnTransProbMatrix
+                #print "log_sum_row_wt", ln_sum_row_wt
+                #print "lnTransProbMatrix", lnTransProbMatrix
                 
                 
                 lnHTE = lnHeadProbVec + lnTransProbMatrix +lnEmissionProbMatrix
-                print 'lnHTE', lnHTE
+                #print 'lnHTE', lnHTE
                 lnHeadProbVec = np.max(lnHTE, axis = 0).reshape(
                                                             (lnHTE.shape[1],1)) 
                 #head prob values
                 #find the row-column positions of the maximum values for 
                 #max-probable cand_pt_t
-                print "lnHeadProbVec", lnHeadProbVec
+                #print "lnHeadProbVec", lnHeadProbVec
                 
                 WaveHead_temp = []
                 WaveHead_dist_temp = []
@@ -215,7 +217,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                                                             shortest_path_nodes
                     bridge_dist = TransitionObjMatrix[row_argmax][col_argmax].\
                                                             shortest_path_len
-                    print 'bridge', bridge, bridge_dist
+                    #print 'bridge', bridge, bridge_dist
                     if record == 1:
                         WaveHead_temp.append(bridge)
                         WaveHead_dist_temp.append(WaveHead_dist[row_argmax] + 
@@ -228,7 +230,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                                                                 bridge_dist)
                 WaveHead = WaveHead_temp
                 WaveHead_dist = WaveHead_dist_temp
-                print zip(WaveHead_dist, WaveHead)
+                #print zip(WaveHead_dist, WaveHead)
                 
             record += 1
             
@@ -236,9 +238,9 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
         pick_max = np.argmax(lnHeadProbVec)
         max_prob_path = WaveHead[pick_max]
         max_prob_path_dist = WaveHead_dist[pick_max]
-        print " max_prob_path  ", max_prob_path
-        print " max_prob  ", max_prob
-        print " max_prob_dist  ", max_prob_path_dist
+        #print " max_prob_path  ", max_prob_path
+        #print " max_prob  ", max_prob
+        #print " max_prob_dist  ", max_prob_path_dist
         return max_prob, max_prob_path_dist, max_prob_path
     
     except UnboundLocalError:
