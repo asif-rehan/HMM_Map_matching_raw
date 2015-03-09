@@ -61,44 +61,30 @@ class TransitionWeight(object):
                                         G, cp1_e_n_d[i]['node'], 
                                            cp2_e_n_d[j]['node'], 'weight')
                 except KeyError:
-                    #print 'KeyError'
-                    #print "cp1_e_n_d[i]['node']", cp1_e_n_d[i]['node']
-                    #print "cp1_e_n_d[j]['node']", cp1_e_n_d[j]['node']
+                    print 'KeyError'
+                    print "cp1_e_n_d[i]['node']", cp1_e_n_d[i]['node']
+                    print "cp1_e_n_d[j]['node']", cp1_e_n_d[j]['node']
                     end_to_end_dist = float('inf')
                 except nx.exception.NetworkXNoPath:
                     end_to_end_dist = float('inf')
                 #distance between nearest road intersections for each of 
-                #the cand points
-                if end_to_end_dist != 0:
-                    #when cand_pt_t1 and cand_pt_t0 on diff edges                 
-                    shortest_path_length = (cp1_e_n_d[i]['dist']
+                #the cand points                    
+                shortest_path_length = (cp1_e_n_d[i]['dist']
                                         + end_to_end_dist
                                         + cp2_e_n_d[j]['dist'])
-                else:
-                    #when cand_pt_t1 and cand_pt_t0 on diff edges
-                    shortest_path_length = abs(cp1_e_n_d[i]['dist']
-                                               - cp2_e_n_d[j]['dist'])
-                    
-                    
                 #total shortest path between cand points considering the 
                 #pair of nearest intersection
                 if shortest_path_length < sd:
                     sd = shortest_path_length
-                    if end_to_end_dist != 0:
-                        end_to_end_seq = nx.shortest_path(G, 
+                    end_to_end_seq = nx.shortest_path(G, 
                                            cp1_e_n_d[i]['node'], 
                                            cp2_e_n_d[j]['node'], 
                                            'weight')                       
-                        shortest_path= list([(cand_pt1.cand_pt_easting,
+                    shortest_path= list([(cand_pt1.cand_pt_easting,
                                           cand_pt1.cand_pt_northing)]
                                    + end_to_end_seq[:] +
                                    [(cand_pt2.cand_pt_easting,
                                      cand_pt2.cand_pt_northing)])
-                    else:
-                        shortest_path= [(cand_pt1.cand_pt_easting, 
-                                         cand_pt1.cand_pt_northing)] +  \
-                                       [(cand_pt2.cand_pt_easting,
-                                        cand_pt2.cand_pt_northing)]
         if sd == float('inf'):
             shortest_path = [(None, None)]        
         #except nx.exception.NetworkXNoPath:
