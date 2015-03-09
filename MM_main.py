@@ -1,5 +1,5 @@
 from MM_AR.GPS_point_cand_point.GPS_point import ObsPoint 
-from MM_AR.HMM_procedure.HMM_KN_Imp_Transition_Probabilities \
+from MM_AR.HMM_procedure.transition_weight \
     import TransitionWeight
 import pickle
 import numpy as np
