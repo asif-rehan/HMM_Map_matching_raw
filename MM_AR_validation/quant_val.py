@@ -134,7 +134,7 @@ if __name__ == "__main__":
     #                       i == 'pl_thu_ev_202_20130328_16-55-00.csv']
     try:
         sys.stdout = open(os.path.join(out_fldr, "sys.stdout.txt"), 'w')
-        files = src_files[22:23] 
+        files = src_files[25:26] 
         print quant_score(files, src_fldr, out_fldr, 
                       des_freq_lst=[None])
     

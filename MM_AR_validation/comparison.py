@@ -41,6 +41,8 @@ def plot_seg(bus_id, f, start, end):
     plt.close()
     return fig, trip[['longitude', 'latitude']]
 
+
+
 def write_csv(os, bus_id, start, trip, route, tod):
     date = '%d%02d%02d' % (start.year, start.month, start.day)
     start_str = '%02d-%02d-%02d' % (start.hour - 4, start.minute, start.second)
