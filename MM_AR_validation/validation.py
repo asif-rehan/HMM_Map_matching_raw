@@ -216,6 +216,14 @@ class Validate(object):
           fancybox=True, shadow=True, ncol=5, fontsize='x-small')
         return min(easting), max(easting), min(northing), max(northing)
     
+    def plot_raw_quiver(self, chunk, fig, ax):
+        """chunk is the pd.dataframe of the csv file
+        """    
+        self.plot_roadnetwork(ax, fig)
+        map_matched_seq = self.df_lat_lon2_utm_lst(chunk)
+        self.plot_map_matched_path_points(map_matched_seq, ax, fig)
+        self.plot_quiver_seq(map_matched_seq, ax, fig)
+        
     def validation_main(self, start_time_local, end_time_local,  
                         road_net_shp, road_net_multigraph_pickled, 
                         gps_std_dev=30, beta=1, duration_minute=60, 
