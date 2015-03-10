@@ -35,6 +35,7 @@ def CreateMultiDiGraph(utm_shp_path):
     nx.draw_graphviz(G)                    
     plt.show()'''
     return G
+
 utm_shp_path = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
                             r'Py Codes\HMM_Krumm_Newson_Implementation\MM_AR',
                             r'Relevant_files\LineString_Road_Network_UTM.shp')

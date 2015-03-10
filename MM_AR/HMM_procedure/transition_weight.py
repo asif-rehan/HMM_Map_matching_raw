@@ -21,7 +21,7 @@ class TransitionWeight(object):
                                             self.shortest_path(self.cand_pt1, 
                                                       self.cand_pt2,
                                                       G, shapefile)
-        
+                
     def end_nodes_dist(self, cand_pt, shapefile):
         '''for candidate point, returns two end nodes of the road it is on 
         and associated distances'''
@@ -109,7 +109,7 @@ class TransitionWeight(object):
         return sd, shortest_path
     
     def shortest_path(self, cand_pt1, cand_pt2, G, shapefile):
-        if cand_pt1.cand_pt_road_id == cand_pt1.cand_pt_road_id:
+        if cand_pt1.cand_pt_road_id == cand_pt2.cand_pt_road_id:
             dist, seq = self.shortest_path_same_road(cand_pt1, 
                                                      cand_pt2, 
                                                      G, shapefile)
@@ -156,7 +156,6 @@ class TransitionWeight(object):
         diff = abs(self.GCD() - self.shortest_path(cand_pt1, cand_pt2, G, 
                                                    shapefile)[0])
         transition_weight = (1/beta) * math.exp(-diff/beta)
-    
+        
         return transition_weight
-    
         
