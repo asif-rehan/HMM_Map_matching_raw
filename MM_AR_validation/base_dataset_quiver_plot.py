@@ -8,7 +8,6 @@ from matplotlib import pyplot as plt
 import pandas as pd
 import os
 
-
 class AllDatasetQuiverPlot(object):    
     def all_dataset_quiver_plot(self, out_fldr, src_fldr, src_file):
         
