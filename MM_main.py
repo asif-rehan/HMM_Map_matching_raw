@@ -203,6 +203,9 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                 print 'lnHTE\n', lnHTE
                 lnHeadProbVec = np.max(lnHTE, axis = 0).reshape(
                                                             (lnHTE.shape[1],1)) 
+                if lnHeadProbVec.max() == -float('inf'):
+                    break
+                
                 #head prob values
                 #find the row-column positions of the maximum values for 
                 #max-probable cand_pt_t
@@ -224,7 +227,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                                                                 bridge_dist)
                     elif lnHeadProbVec[col_argmax] == 0:
                         WaveHead_temp.append('out of network')
-                    elif bridge_dist != float('inf'):
+                    elif bridge != [(None, None)]:
                         WaveHead_temp.append(WaveHead[row_argmax]+bridge[:])
                         WaveHead_dist_temp.append(WaveHead_dist[row_argmax] + 
                                                                 bridge_dist)
