@@ -117,7 +117,6 @@ def quant_score(src_files, src_fldr, out_fldr, des_freq_lst,):
     return tab
 
 
-
     
 if __name__ == "__main__":
 
@@ -131,9 +130,9 @@ if __name__ == "__main__":
     
     try:
         sys.stdout = open(os.path.join(out_fldr, "sys.stdout.txt"), 'w')
-        files = src_files[32:33] 
+        files = src_files[5:6] 
         print quant_score(files, src_fldr, out_fldr, 
-                      des_freq_lst=[None])
+                      des_freq_lst=[15])
     
     finally:
         sys.stdout.close()
