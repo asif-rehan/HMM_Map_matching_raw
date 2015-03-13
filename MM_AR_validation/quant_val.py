@@ -130,7 +130,7 @@ if __name__ == "__main__":
     
     try:
         sys.stdout = open(os.path.join(out_fldr, "sys.stdout.txt"), 'w')
-        files = src_files[5:6] 
+        files = src_files[17:18]
         print quant_score(files, src_fldr, out_fldr, 
                       des_freq_lst=[15])
     
