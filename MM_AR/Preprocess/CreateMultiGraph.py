@@ -52,9 +52,9 @@ utm_shp_path = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
 
 if __name__ == '__main__':
     G = CreateMultiGraph(utm_shp_path)
-    pickle.dump(G, open('../Relevant_files/MultiGraph.p', 'wb'))
-    MDG = CreateMultiDiGraph(utm_shp_path)
-    pickle.dump(MDG, open('../Relevant_files/MultiDiGraph.p', 'wb'))
+    pickle.dump(G, open('../Relevant_files/MultiGraph2.p', 'wb'))
+    #MDG = CreateMultiDiGraph(utm_shp_path)
+    #pickle.dump(MDG, open('../Relevant_files/MultiDiGraph.p', 'wb'))
     #print nx.dijkstra_path(G, (732805.0271117099, 4623614.515877712),
     #                              (729658.6308007092, 4630691.33944068), 'weight')
     
