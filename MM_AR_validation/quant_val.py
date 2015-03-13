@@ -89,7 +89,7 @@ def err_val(src_fldr, src_file, out_fldr, des_freq=None):
 def quant_score(src_files, src_fldr, out_fldr, des_freq_lst,):
     tab = pd.DataFrame(columns=['Freq', 'Route', 'DOW', 'TOD', 
                                 'Error', 'Score','File'])
-    for des_freq, src_file in [(i,f) for i in des_freq_lst for f in src_files]:
+    for src_file, des_freq in [(f,i) for f in src_files for i in des_freq_lst]:
         try:
             err, score, med_freq_fl = err_val(src_fldr, src_file, 
                                               out_fldr, des_freq)
@@ -131,7 +131,7 @@ if __name__ == "__main__":
     
     try:
         sys.stdout = open(os.path.join(out_fldr, "sys.stdout.txt"), 'w')
-        files = src_files[31:32] 
+        files = src_files[32:33] 
         print quant_score(files, src_fldr, out_fldr, 
                       des_freq_lst=[None])
     
