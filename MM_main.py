@@ -227,7 +227,8 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                                                                 bridge_dist)
                     elif lnHeadProbVec[col_argmax] == 0:
                         WaveHead_temp.append('out of network')
-                    elif bridge != [(None, None)]:
+                    
+                    else:
                         WaveHead_temp.append(WaveHead[row_argmax]+bridge[:])
                         WaveHead_dist_temp.append(WaveHead_dist[row_argmax] + 
                                                                 bridge_dist)
