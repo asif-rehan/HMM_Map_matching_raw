@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 import os
 import pandas as pd
 from MM_AR_validation.validation import Validate
-import pyproj
+
 
 def shuttle_data2dataframe(f):
     return pd.read_csv(f, usecols=[8, 11, 10, 15], 
@@ -13,30 +13,19 @@ def shuttle_data2dataframe(f):
 
 def plot_seg(bus_id, f, start, end):
     
-    road_shp_file = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
-                                 'Py Codes\HMM_Krumm_Newson_Implementation', 
-                                 'MM_AR/Relevant_files',
-                                 'LineString_Road_Network_UTM.shp')
     
     df = shuttle_data2dataframe(f)
     df = df[df['username']=='uconn%s' % bus_id].sort_index(0)
     trip = df[start:end]
-    WGS84 = pyproj.Proj("+init=EPSG:4326")
-    UTM18N=pyproj.Proj("+init=EPSG:32618")
-    trnsfm = trip.apply(lambda t: pyproj.transform(WGS84, UTM18N, 
-                                    t['longitude'], t['latitude']), 
-                                    axis=1)
-    eas, nor = zip(*trnsfm[:])
     
     fig = plt.figure()
     ax = plt.axes()
-    plt.scatter(eas, nor, c=trip.index, cmap=plt.get_cmap("hot"),
-                edgecolor='black', linewidth='0.5')
+    
     val = Validate('')
-    val.plot_roadnetwork(road_shp_file, ax, fig)
-    plt.xlim(min(eas) - 200, 200 + max(eas))
-    plt.ylim(min(nor) - 200, 200 + max(nor))
-    plt.colorbar()
+    val.plot_roadnetwork(ax, fig)
+    val.plot_raw_quiver(trip, fig, ax)
+    seq = val.df_lat_lon2_utm_lst(trip)
+    val.plot_map_matched_path_points(seq, ax, fig)
     plt.show()
     plt.close()
     return fig, trip[['longitude', 'latitude']]
@@ -69,21 +58,21 @@ if __name__ == '__main__':
     #######################################################
     #    April
     #######################################################
-    fldr = os.path.join(r'C:\Users\asr13006\Desktop\Thesis',
-                        'Copy of Data Reservoir\April 2013')
-    f = fldr + r'\20130418_40000-20130420_40000.csv'
-    bus_id = 205
+    fldr = os.path.join(r'C:\Users\asr13006\OneDrive',
+                        'Thesis\Copy of Data Reservoir\April 2013')
+    f = fldr + r'\20130416_40000-20130418_40000.csv'
+    bus_id = 204
     
     #######################################################
     #    slide time window and visualize
     #######################################################
-    start = datetime(2013, 3, 27, 16, 15, 10)
-    end   = datetime(2013, 3, 27, 16, 50, 50)
+    start = datetime(2013, 4, 16, 20, 30, 30)
+    end   = datetime(2013, 4, 16, 20, 54, 50)
     fig, trip = plot_seg(bus_id, f, start, end)
     #######################################################
     #    save csv
     #######################################################
-    route = 'yl'
+    route = 'or'
     tod = 'ev'
     save_path = write_csv(os, bus_id, start, trip, route, tod)
     #######################################################
@@ -105,7 +94,8 @@ if __name__ == '__main__':
     file_lst = [f for f in os.listdir(save_path) if os.path.isfile(f)]
     df = pd.read_csv(file_lst[0])
     df.columns
-    loc = os.path.abspath(os.path.join(os.path.dirname( os.getcwd() ), os.pardir, 
+    loc = os.path.abspath(os.path.join(os.path.dirname( os.getcwd() ), 
+                                       os.pardir, 
                                  'val_dataset - Copy'))
     del df['username']
     #######################################################

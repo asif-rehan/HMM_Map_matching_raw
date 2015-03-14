@@ -11,7 +11,7 @@ def read_data_point(datafile, lon_col_id, lat_col_id, timestamp_col_id):
     rownum = 0   
      
     for row in reader:
-        # Save header row.
+        # Save header row
         if rownum == 0:
             #header = row
             pass
