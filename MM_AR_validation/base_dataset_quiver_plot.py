@@ -8,7 +8,9 @@ from matplotlib import pyplot as plt
 import pandas as pd
 import os
 
-class AllDatasetQuiverPlot(object):    
+class AllDatasetQuiverPlot(object):
+    """Plots quiver + scatter plot for all 54 sample data files 
+    """    
     def all_dataset_quiver_plot(self, out_fldr, src_fldr, src_file):
         
         chunk = pd.read_csv(os.path.join(src_fldr, src_file))
@@ -17,7 +19,7 @@ class AllDatasetQuiverPlot(object):
         v = val('')
         v.plot_raw_quiver(chunk, fig, ax)
         plt.title(src_file[:-4])
-        plt.savefig(os.path.join(out_fldr, src_file[:-4]+'_qvr'+'.png'))
+        plt.savefig(os.path.join(out_fldr, src_file[:-4]+'_qvr_plt'+'.png'))
         plt.close()
     
     
