@@ -61,18 +61,18 @@ if __name__ == '__main__':
     fldr = os.path.join(r'C:\Users\asr13006\OneDrive',
                         'Thesis\Copy of Data Reservoir\April 2013')
     f = fldr + r'\20130416_40000-20130418_40000.csv'
-    bus_id = 204
+    bus_id = 205
     
     #######################################################
     #    slide time window and visualize
     #######################################################
-    start = datetime(2013, 4, 16, 20, 30, 30)
-    end   = datetime(2013, 4, 16, 20, 54, 50)
+    start = datetime(2013, 4, 17, 22, 10, 20)
+    end   = datetime(2013, 4, 17, 22, 55, 20)
     fig, trip = plot_seg(bus_id, f, start, end)
     #######################################################
     #    save csv
     #######################################################
-    route = 'or'
+    route = 'gr'
     tod = 'ev'
     save_path = write_csv(os, bus_id, start, trip, route, tod)
     #######################################################
