@@ -27,12 +27,12 @@ def total_obs_line(src_files_list):
     return tot
 
 def get_ckt_len(rt):
-    lengths_m = {'Blue'  :  9020.445431931008, 
-                 'Purple': 17006.976707619033, 
-                 'Yellow':  9988.4613670575709, 
-                 'Green' : 10441.173470569714, 
-                 'Orange':  5107.549615113172, 
-                 'Red'   :  7138.0028070014778}
+    lengths_m = {'bl'  :  9020.445431931008, 
+                 'pl': 17006.976707619033, 
+                 'yl':  9988.4613670575709, 
+                 'gr' : 10441.173470569714, 
+                 'or':  5107.549615113172, 
+                 'rd'   :  7138.0028070014778}
     return lengths_m[rt]
 
 def diagnostic_plot(mm_seq, label, out_fldr, src_file, freq, out_file_path):
