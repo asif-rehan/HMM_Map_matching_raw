@@ -7,23 +7,25 @@ from fiona.crs import from_epsg
 def CreateMultiGraph(utm_shp_path):
     G = nx.MultiGraph()
     with fiona.open(utm_shp_path,crs= from_epsg(32618)) as shp:
-        #,driver='ESRI Shapefile'
+        #driver='ESRI Shapefile'
         for elem in shp:
             strt = elem['geometry']['coordinates'][0]
             len_coords = len(elem['geometry']['coordinates'])
             end = elem['geometry']['coordinates'][len_coords-1]
             length_meter = elem['properties']['Length_met']
-            G.add_edge(strt, end, weight = length_meter)
-                                        
+            G.add_edge(strt, end, 
+                       weight = length_meter, 
+                       key= elem['id'])                            
+    return G
     '''print len(G), G.number_of_nodes(),G.number_of_edges()
     nx.draw_graphviz(G)                    
     plt.show()'''
-    return G
+    
 
 def CreateMultiDiGraph(utm_shp_path):
     G = nx.MultiDiGraph()
     with fiona.open(utm_shp_path,crs= from_epsg(32618)) as shp:
-        #,driver='ESRI Shapefile'
+        #driver='ESRI Shapefile'
         for elem in shp:
             strt = elem['geometry']['coordinates'][0]
             len_coords = len(elem['geometry']['coordinates'])
@@ -37,8 +39,8 @@ def CreateMultiDiGraph(utm_shp_path):
     return G
 
 utm_shp_path = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
-                            r'Py Codes\HMM_Krumm_Newson_Implementation\MM_AR',
-                            r'Relevant_files\LineString_Road_Network_UTM.shp')
+                    r'Py Codes\ETA_KRR\_files\LineString_Road_Network_UTM.shp')
+
 '''
 utm_shp_path = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
                            r'Py Codes\HMM_Krumm_Newson_Implementation\MM_AR',

@@ -6,6 +6,8 @@ Created on Feb 13, 2015
 import os
 import pandas as pd
 from matplotlib import pyplot as plt
+from itertools import combinations
+
 def plt_err_vs_freq_on_route(dataframe, xvar, yvar, var3, 
                              col, mar, leg):
     uniq_var3 = dataframe[var3].unique()
@@ -13,9 +15,8 @@ def plt_err_vs_freq_on_route(dataframe, xvar, yvar, var3,
         subset = dataframe[dataframe[var3] == uniq]
         plt.scatter(subset[xvar], subset[yvar], 
              color=col[uniq], marker=mar[uniq], alpha=0.75, label=leg[uniq])
-    plt.legend(loc=10, bbox_to_anchor=(1.05, 0.5),
-          fancybox=True, shadow=True, ncol=1, 
-          fontsize='x-small')
+    plt.legend(loc='lower right',
+          fontsize='xx-small')
     if yvar == 'Error':
         plt.axhline(y=0,xmin=0,xmax=65,c="k",linewidth=0.5,zorder=0)
     if yvar == 'Score':
@@ -25,6 +26,14 @@ def plt_err_vs_freq_on_route(dataframe, xvar, yvar, var3,
     plt.ylabel('%{}'.format(yvar))
     plt.show()
 
+def check_T_test(criterion, df):
+    for c in combinations(df[criterion].unique(), 2):
+        df[df == c[0]]
+        
+        
+    
+    
+    
 out_fldr = os.path.join(r'C:\\Users\\asr13006\\Google Drive\\UConn MS',
             r'Py Codes/HMM_Krumm_Newson_Implementation\\MM_AR_validation',
             r'val_graphs')
@@ -70,7 +79,8 @@ for cat in ['Freq' ,'Route', 'DOW', 'TOD']:
 #     V3 = ROUTE
 ##########################################################################
 
-col_rt = {'bl': 'b', 'rd':'r', 'gr':'g', 'yl':'y', 'or':'#FFA500','pl':'#7F00FF'}
+col_rt = {'bl': 'b', 'rd':'r', 'gr':'g', 'yl':'y', 'or':'#FFA500',
+          'pl':'#7F00FF'}
 mar_rt = {'bl': 'x', 'rd':'+', 'gr':'d', 'yl':'s', 'or':'o','pl':'^'}
 leg_rt = {'bl': 'Blue Line', 'rd':'Red Line', 'gr':'Green Line', 
           'yl':'Yellow Line', 'or':'Orange Line','pl':'Purple Line'}
@@ -82,7 +92,7 @@ plt_err_vs_freq_on_route(all_but4, xvar='Freq', yvar='Score', var3='Route')
 #     VERSION 1.0
 #================
 plt_err_vs_freq_on_route(out_df, xvar='Freq', yvar='Error', var3='Route', 
-                         col_rt, mar_rt, leg_rt)
+                         col=col_rt, mar=mar_rt, leg=leg_rt)
 plt_err_vs_freq_on_route(out_df, xvar='Freq', yvar='Score', var3='Route',
                          col=col_rt, mar=mar_rt, leg=leg_rt)
 
