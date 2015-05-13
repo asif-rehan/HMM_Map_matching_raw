@@ -17,7 +17,7 @@ class TransitionWeight(object):
         self.transition_wt = self.transition_weight(self.cand_pt1, 
                                                     self.cand_pt2, 
                                                     G, beta, shapefile)
-        self.shortest_path_len, self.shortest_path_nodes =  \
+        self.sp_len, self.sp_nodes, self.sp_rd_id_len =  \
                                             self.shortest_path(self.cand_pt1, 
                                                       self.cand_pt2,
                                                       G, shapefile)
@@ -38,7 +38,7 @@ class TransitionWeight(object):
         return ({"node":end_nodes[0], "dist":dist_to_1st_node},
                 {"node":end_nodes[1], "dist":dist_to_2nd_node})
         
-
+ 
     def shortest_path_diff_road(self, cand_pt1, cand_pt2, G, shapefile):
         '''
         shortest path length in meter
@@ -80,44 +80,61 @@ class TransitionWeight(object):
                                            cp1_e_n_d[i]['node'], 
                                            cp2_e_n_d[j]['node'], 
                                            'weight')                       
-                    shortest_path= list([(cand_pt1.cand_pt_easting,
+                    sp_nodes= list([(cand_pt1.cand_pt_easting,
                                           cand_pt1.cand_pt_northing)]
                                    + end_to_end_seq[:] +
                                    [(cand_pt2.cand_pt_easting,
                                      cand_pt2.cand_pt_northing)])
+                    end_to_end_rd_id_len =[]
+                    for i in range(len(end_to_end_seq)-1):
+                        edge_info = [G[end_to_end_seq[i]][end_to_end_seq[i+1]]]
+                        rd_id = edge_info.keys()
+                        rd_len = edge_info.values()[0]['weight']
+                        end_to_end_rd_id_len.append[(rd_id, rd_len)]
+                    
+                    
+                    
+                    sp_rd_id_len = [(cand_pt1.cand_pt_road_id,  
+                                     cp1_e_n_d[i]['dist'])] +  \
+                                     end_to_end_rd_id_len +   \
+                                     [(cand_pt2.cand_pt_road_id,
+                                       cp2_e_n_d[j]['dist'])]       
+                                    
         if sd == float('inf'):
-            shortest_path = [(None, None)]        
+            sp_nodes = [(None, None)] 
+            sp_rd_id_len = [('No road', float('inf'))]       
         #except nx.exception.NetworkXNoPath:
             #print "cand_pt_1",(cand_pt1.cand_pt_easting, 
             #                   cand_pt1.cand_pt_northing)
             #print "cand_pt_2",(cand_pt2.cand_pt_easting, 
             #                   cand_pt2.cand_pt_northing)
-        #    shortest_path = [None]
+        #    sp_nodes = [None]
         #    shortest_path_length = float('inf')          
-        return sd, shortest_path    
+        return sd, sp_nodes, sp_rd_id_len    
     
     def shortest_path_same_road(self, cand_pt1, cand_pt2, G, shapefile):
         cp1_e_n_d = self.end_nodes_dist(cand_pt1, shapefile)
         cp2_e_n_d = self.end_nodes_dist(cand_pt2, shapefile)
         shortest_path_length = abs(cp1_e_n_d[0]['dist']
                                                - cp2_e_n_d[0]['dist'])
-        shortest_path= [(cand_pt1.cand_pt_easting, 
+        sp_nodes= [(cand_pt1.cand_pt_easting, 
                                          cand_pt1.cand_pt_northing)] +  \
                                        [(cand_pt2.cand_pt_easting,
                                         cand_pt2.cand_pt_northing)]
         sd = shortest_path_length
-        return sd, shortest_path
+        sp_rd_id_len = [(cand_pt1.cand_pt_road_id, sd)] 
+        return sd, sp_nodes, sp_rd_id_len
     
     def shortest_path(self, cand_pt1, cand_pt2, G, shapefile):
         if cand_pt1.cand_pt_road_id == cand_pt2.cand_pt_road_id:
-            dist, seq = self.shortest_path_same_road(cand_pt1, 
+            dist, nd_seq, rd_id_len = self.shortest_path_same_road(cand_pt1, 
                                                      cand_pt2, 
                                                      G, shapefile)
         else:
-            dist, seq = self.shortest_path_diff_road(cand_pt1, 
+            dist, nd_seq, rd_id_len = self.shortest_path_diff_road(cand_pt1, 
                                                      cand_pt2, 
                                                      G, shapefile)
-        return dist, seq
+        return dist, nd_seq, rd_id_len
     
     def cand_pt_UTM_to_LongLat(self, cand_pt_easting, cand_pt_northing):
         '''

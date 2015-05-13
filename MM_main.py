@@ -217,9 +217,9 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                 for col_argmax in xrange(col_len):
                     row_argmax = np.argmax(lnHTE_trnsps[col_argmax])
                     bridge = TransitionObjMatrix[row_argmax][col_argmax].\
-                                                            shortest_path_nodes
+                                                            sp_nodes
                     bridge_dist = TransitionObjMatrix[row_argmax][col_argmax].\
-                                                            shortest_path_len
+                                                            sp_len
                     print 'bridge', bridge, bridge_dist
                     if record == 1:
                         WaveHead_temp.append(bridge)
