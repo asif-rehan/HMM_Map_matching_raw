@@ -81,7 +81,8 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                 lnHeadProbVec = np.empty(shape=[0, 1]) #initiate as list. from 2nd GPS 
                                                 #point, becomes NumPy array
                 WaveHead = []
-                WaveHead_dist = []            
+                WaveHead_dist = []  
+                WaveHead_rd_id_len = []          
                 for cand_pt_0 in points[record].candidate_points:
                     lnHeadProbVec = np.append(lnHeadProbVec,
                               [[np.log(cand_pt_0.cand_pt_emission_prob)]], 
@@ -90,6 +91,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                     WaveHead.append([(cand_pt_0.cand_pt_easting, 
                                      cand_pt_0.cand_pt_northing)])
                     WaveHead_dist.append(0)
+                    WaveHead_rd_id_len.append([])
                     #print (cand_pt_0.cand_pt_easting, cand_pt_0.cand_pt_northing)
                 #print "lnHeadProbVec", lnHeadProbVec
                 #print "WaveHead", WaveHead
@@ -213,6 +215,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                 
                 WaveHead_temp = []
                 WaveHead_dist_temp = []
+                WaveHead_rd_id_len_temp = []
                 lnHTE_trnsps = np.transpose(lnHTE)
                 for col_argmax in xrange(col_len):
                     row_argmax = np.argmax(lnHTE_trnsps[col_argmax])
@@ -220,11 +223,15 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                                                             sp_nodes
                     bridge_dist = TransitionObjMatrix[row_argmax][col_argmax].\
                                                             sp_len
+                    bridge_rd_id_len =   \
+                                TransitionObjMatrix[row_argmax][col_argmax].\
+                                                            sp_rd_id_len
                     print 'bridge', bridge, bridge_dist
                     if record == 1:
                         WaveHead_temp.append(bridge)
                         WaveHead_dist_temp.append(WaveHead_dist[row_argmax] + 
                                                                 bridge_dist)
+                        WaveHead_rd_id_len_temp.append(bridge_rd_id_len)
                     elif lnHeadProbVec[col_argmax] == 0:
                         WaveHead_temp.append('out of network')
                     
@@ -232,8 +239,12 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                         WaveHead_temp.append(WaveHead[row_argmax]+bridge[:])
                         WaveHead_dist_temp.append(WaveHead_dist[row_argmax] + 
                                                                 bridge_dist)
+                        WaveHead_rd_id_len_temp.append(
+                                            WaveHead_rd_id_len[row_argmax] + 
+                                                            bridge_rd_id_len)
                 WaveHead = WaveHead_temp
                 WaveHead_dist = WaveHead_dist_temp
+                WaveHead_rd_id_len = WaveHead_rd_id_len_temp
                 print "WaveHead"
                 print zip(WaveHead_dist, WaveHead)
                 
@@ -243,10 +254,12 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
         pick_max = np.argmax(lnHeadProbVec)
         max_prob_path = WaveHead[pick_max]
         max_prob_path_dist = WaveHead_dist[pick_max]
+        max_prob_path_rd_id_len = WaveHead_rd_id_len[pick_max]
         print " max_prob_path  ", max_prob_path
         print " max_prob  ", max_prob
         print " max_prob_dist  ", max_prob_path_dist
-        return max_prob, max_prob_path_dist, max_prob_path
+        return max_prob, max_prob_path_dist,   \
+                max_prob_path, max_prob_path_rd_id_len
     
     except UnboundLocalError:
         print 'Stationary object'
@@ -257,8 +270,8 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
 #print "--- {0} seconds ---".format(time.time() - start_time)
 
 if __name__ == '__main__':
-    #datafile = r'C:\Users\asr13006\Google Drive\UConn MS\Py Codes\HMM_Krumm_Newson_Implementation\MM_AR\Relevant_files\phnGPS_orng.csv'
-    out = Viterbi(datafile=r'C:\\Users\\asr13006\\Google Drive\\UConn MS\\Py Codes\\HMM_Krumm_Newson_Implementation\\MM_AR_validation\\val_dataset\\pl_wed_ev_202_20130327_15-52-00.csv',
+    #datafile = 'C:\\Users\\asr13006\\Google Drive\\UConn MS\\Py Codes\\HMM_Krumm_Newson_Implementation\\MM_AR_validation\\val_dataset\\pl_wed_ev_202_20130327_15-52-00.csv'
+    out = Viterbi(datafile=r'C:\Users\asr13006\Google Drive\UConn MS\Py Codes\HMM_Krumm_Newson_Implementation\MM_AR\Relevant_files\phnGPS_orng.csv',
         lon_col_id=5, lat_col_id=4, timestamp_col_id=9,
         gps_mean = 0, gps_std_dev=7, circ_radius=30,
         road_net_shp = "MM_AR/Relevant_files/LineString_Road_Network_UTM.shp",
@@ -266,5 +279,5 @@ if __name__ == '__main__':
         beta=1)
     print out
     print "--- {0} seconds ---".format(time.time() - start_time)
-#sys.stdout.close()
-#sys.stderr = sys.__stderr__
+sys.stdout.close()
+sys.stderr = sys.__stderr__

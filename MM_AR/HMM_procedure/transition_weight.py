@@ -86,20 +86,19 @@ class TransitionWeight(object):
                                    [(cand_pt2.cand_pt_easting,
                                      cand_pt2.cand_pt_northing)])
                     end_to_end_rd_id_len =[]
-                    for i in range(len(end_to_end_seq)-1):
-                        edge_info = [G[end_to_end_seq[i]][end_to_end_seq[i+1]]]
-                        rd_id = edge_info.keys()
+                    for q in range(len(end_to_end_seq)-1):
+                        edge_info = G[end_to_end_seq[q]][end_to_end_seq[q+1]]
+                        rd_id = edge_info.keys()[0]
                         rd_len = edge_info.values()[0]['weight']
-                        end_to_end_rd_id_len.append[(rd_id, rd_len)]
+                        end_to_end_rd_id_len.append((rd_id, rd_len))
                     
-                    
-                    
-                    sp_rd_id_len = [(cand_pt1.cand_pt_road_id,  
-                                     cp1_e_n_d[i]['dist'])] +  \
-                                     end_to_end_rd_id_len +   \
+                    sp_rd_id_len = list([(cand_pt1.cand_pt_road_id,  
+                                     cp1_e_n_d[i]['dist'])] 
+                                    +  end_to_end_rd_id_len +
                                      [(cand_pt2.cand_pt_road_id,
-                                       cp2_e_n_d[j]['dist'])]       
-                                    
+                                       cp2_e_n_d[j]['dist'])])       
+                             
+                                
         if sd == float('inf'):
             sp_nodes = [(None, None)] 
             sp_rd_id_len = [('No road', float('inf'))]       
