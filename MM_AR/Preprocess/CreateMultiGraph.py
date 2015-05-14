@@ -4,9 +4,11 @@ import os
 #import matplotlib.pyplot as plt
 from fiona.crs import from_epsg
 
-def CreateMultiGraph(utm_shp_path):
+this_dir =  os.path.dirname(__file__)
+
+def CreateMultiGraph(road_net_shp):
     G = nx.MultiGraph()
-    with fiona.open(utm_shp_path,crs= from_epsg(32618)) as shp:
+    with fiona.open(road_net_shp,crs= from_epsg(32618)) as shp:
         #driver='ESRI Shapefile'
         for elem in shp:
             strt = elem['geometry']['coordinates'][0]
@@ -17,14 +19,10 @@ def CreateMultiGraph(utm_shp_path):
                        weight = length_meter, 
                        key= elem['id'])                            
     return G
-    '''print len(G), G.number_of_nodes(),G.number_of_edges()
-    nx.draw_graphviz(G)                    
-    plt.show()'''
-    
 
-def CreateMultiDiGraph(utm_shp_path):
+def CreateMultiDiGraph(road_net_shp):
     G = nx.MultiDiGraph()
-    with fiona.open(utm_shp_path,crs= from_epsg(32618)) as shp:
+    with fiona.open(road_net_shp,crs= from_epsg(32618)) as shp:
         #driver='ESRI Shapefile'
         for elem in shp:
             strt = elem['geometry']['coordinates'][0]
@@ -38,24 +36,24 @@ def CreateMultiDiGraph(utm_shp_path):
     plt.show()'''
     return G
 
-utm_shp_path = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
-                    r'Py Codes\ETA_KRR\_files\LineString_Road_Network_UTM.shp')
+road_net_shp = os.path.join(this_dir,
+                    r"../Relevant_files/LineString_Road_Network_UTM.shp")
 
 '''
-utm_shp_path = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
+road_net_shp = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
                            r'Py Codes\HMM_Krumm_Newson_Implementation\MM_AR',
                            r'Relevant_files\editing_alumni_rd',
                            'LineString_Road_Network_UTM2.shp') 
 '''
 
-#utm_shp_path = "C:/Users/asr13006/Desktop/Thesis/Copy of Data Reservoir/\
+#road_net_shp = "C:/Users/asr13006/Desktop/Thesis/Copy of Data Reservoir/\
 #routes/County 13/road network micro/nxspatial3/NF/copy/TransformCRS/\
 #LineString_Road_Network_UTM.shp" 
 
 if __name__ == '__main__':
-    G = CreateMultiGraph(utm_shp_path)
-    pickle.dump(G, open('../Relevant_files/MultiGraph.p', 'wb'))
-    #MDG = CreateMultiDiGraph(utm_shp_path)
+    G = CreateMultiGraph(road_net_shp)
+    pickle.dump(G, open('../Relevant_files/MultiGraph.p', 'wb'))       
+    #MDG = CreateMultiDiGraph(road_net_shp)
     #pickle.dump(MDG, open('../Relevant_files/MultiDiGraph.p', 'wb'))
     #print nx.dijkstra_path(G, (732805.0271117099, 4623614.515877712),
     #                              (729658.6308007092, 4630691.33944068), 'weight')

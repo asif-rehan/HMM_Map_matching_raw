@@ -270,8 +270,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
 #print "--- {0} seconds ---".format(time.time() - start_time)
 
 if __name__ == '__main__':
-    #datafile = 'C:\\Users\\asr13006\\Google Drive\\UConn MS\\Py Codes\\HMM_Krumm_Newson_Implementation\\MM_AR_validation\\val_dataset\\pl_wed_ev_202_20130327_15-52-00.csv'
-    out = Viterbi(datafile=r'C:\Users\asr13006\Google Drive\UConn MS\Py Codes\HMM_Krumm_Newson_Implementation\MM_AR\Relevant_files\phnGPS_orng.csv',
+    out = Viterbi(datafile="MM_AR/Relevant_files/phnGPS_orng.csv",
         lon_col_id=5, lat_col_id=4, timestamp_col_id=9,
         gps_mean = 0, gps_std_dev=7, circ_radius=30,
         road_net_shp = "MM_AR/Relevant_files/LineString_Road_Network_UTM.shp",
