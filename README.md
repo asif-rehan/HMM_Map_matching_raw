@@ -18,4 +18,4 @@ To see a demo use development branch
 * Shapely - 1.3.2
 * PyProj - 1.9.2
 * Pandas - 0.14.1 
-* 
+
