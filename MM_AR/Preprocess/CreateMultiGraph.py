@@ -10,14 +10,23 @@ def CreateMultiGraph(road_net_shp):
     G = nx.MultiGraph()
     with fiona.open(road_net_shp,crs= from_epsg(32618)) as shp:
         #driver='ESRI Shapefile'
+        node_coord_to_id_dict = {}
+        node_id = -1
         for elem in shp:
             strt = elem['geometry']['coordinates'][0]
             len_coords = len(elem['geometry']['coordinates'])
             end = elem['geometry']['coordinates'][len_coords-1]
+            for node in [strt, end]:
+                if node not in node_coord_to_id_dict:
+                    node_coord_to_id_dict[node] = str(node_id)
+                    node_id -= 1
             length_meter = elem['properties']['Length_met']
-            G.add_edge(strt, end, 
+            G.add_edge(node_coord_to_id_dict[strt], node_coord_to_id_dict[end], 
                        weight = length_meter, 
-                       key= elem['id'])                            
+                       key= elem['id'])     
+    node_id_to_coord_reverse = dict(zip(node_coord_to_id_dict.values(), 
+                                     node_coord_to_id_dict.keys()))                               
+    nx.set_node_attributes(G, 'node_coord', node_id_to_coord_reverse)
     return G
 
 def CreateMultiDiGraph(road_net_shp):
@@ -39,12 +48,12 @@ def CreateMultiDiGraph(road_net_shp):
 road_net_shp = os.path.join(this_dir,
                     r"../Relevant_files/LineString_Road_Network_UTM.shp")
 
-'''
-road_net_shp = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
-                           r'Py Codes\HMM_Krumm_Newson_Implementation\MM_AR',
-                           r'Relevant_files\editing_alumni_rd',
-                           'LineString_Road_Network_UTM2.shp') 
-'''
+
+#road_net_shp = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
+#                           r'Py Codes\HMM_Krumm_Newson_Implementation\MM_AR',
+#                           r'Relevant_files\editing_alumni_rd',
+#                           'LineString_Road_Network_UTM2.shp') 
+
 
 #road_net_shp = "C:/Users/asr13006/Desktop/Thesis/Copy of Data Reservoir/\
 #routes/County 13/road network micro/nxspatial3/NF/copy/TransformCRS/\
