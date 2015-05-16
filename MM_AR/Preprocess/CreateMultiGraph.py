@@ -21,12 +21,12 @@ def CreateMultiGraph(road_net_shp):
                     node_coord_to_id_dict[node] = str(node_id)
                     node_id -= 1
             length_meter = elem['properties']['Length_met']
-            G.add_edge(node_coord_to_id_dict[strt], node_coord_to_id_dict[end], 
-                       weight = length_meter, 
+            G.add_edge(strt, end, 
+                       len = length_meter, 
                        key= elem['id'])     
-    node_id_to_coord_reverse = dict(zip(node_coord_to_id_dict.values(), 
-                                     node_coord_to_id_dict.keys()))                               
-    nx.set_node_attributes(G, 'node_coord', node_id_to_coord_reverse)
+    #node_id_to_coord_reverse = dict(zip(node_coord_to_id_dict.values(), 
+    #                                 node_coord_to_id_dict.keys()))                               
+    nx.set_node_attributes(G, 'node_id', node_coord_to_id_dict)
     return G
 
 def CreateMultiDiGraph(road_net_shp):
