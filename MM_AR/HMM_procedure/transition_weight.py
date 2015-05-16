@@ -59,7 +59,7 @@ class TransitionWeight(object):
                     #print "cp1_e_n_d[j]['node']", cp1_e_n_d[j]['node']
                     end_to_end_dist = nx.shortest_path_length(
                                         G, cp1_e_n_d[i]['node'], 
-                                           cp2_e_n_d[j]['node'], 'weight')
+                                           cp2_e_n_d[j]['node'], weight='len')
                 except KeyError:
                     print 'KeyError'
                     #print "cp1_e_n_d[i]['node']", cp1_e_n_d[i]['node']
@@ -79,7 +79,7 @@ class TransitionWeight(object):
                     end_to_end_seq = nx.shortest_path(G, 
                                            cp1_e_n_d[i]['node'], 
                                            cp2_e_n_d[j]['node'], 
-                                           'weight')                       
+                                           weight='len')                       
                     sp_nodes= list([(cand_pt1.cand_pt_easting,
                                           cand_pt1.cand_pt_northing)]
                                    + end_to_end_seq[:] +
@@ -89,7 +89,7 @@ class TransitionWeight(object):
                     for q in range(len(end_to_end_seq)-1):
                         edge_info = G[end_to_end_seq[q]][end_to_end_seq[q+1]]
                         rd_id = edge_info.keys()[0]
-                        rd_len = edge_info.values()[0]['weight']
+                        rd_len = edge_info.values()[0]['len']
                         end_to_end_rd_id_len.append((rd_id, rd_len))
                     
                     sp_rd_id_len = list([(cand_pt1.cand_pt_road_id,  

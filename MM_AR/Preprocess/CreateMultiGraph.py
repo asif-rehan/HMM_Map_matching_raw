@@ -25,7 +25,8 @@ def CreateMultiGraph(road_net_shp):
                        len = length_meter, 
                        key= elem['id'])     
     #node_id_to_coord_reverse = dict(zip(node_coord_to_id_dict.values(), 
-    #                                 node_coord_to_id_dict.keys()))                               
+    #                                 node_coord_to_id_dict.keys()))  
+                           
     nx.set_node_attributes(G, 'node_id', node_coord_to_id_dict)
     return G
 
