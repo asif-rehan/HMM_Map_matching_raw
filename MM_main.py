@@ -16,6 +16,7 @@ sys.stdout=open('output_{0}_{1}.txt'.format(time.strftime('%Y-%m-%dT%H.%M.%S',
                                             'orng_20141014'), 'w')
 
 start_time = time.time()
+
 def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id, 
             gps_mean=0, gps_std_dev=7, circ_radius=30,
             road_net_shp = os.path.join(this_dir,
@@ -88,8 +89,9 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                               [[np.log(cand_pt_0.cand_pt_emission_prob)]], 
                               axis = 0)
                     #WaveHead.append(None)
-                    WaveHead.append([(cand_pt_0.cand_pt_easting, 
-                                     cand_pt_0.cand_pt_northing)])
+                    WaveHead.append([((cand_pt_0.cand_pt_easting, 
+                                     cand_pt_0.cand_pt_northing), 
+                                      cand_pt_0.cand_pt_timestamp)])
                     WaveHead_dist.append(0)
                     WaveHead_rd_id_len.append([])
                     #print (cand_pt_0.cand_pt_easting, cand_pt_0.cand_pt_northing)
@@ -236,7 +238,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                         WaveHead_temp.append('out of network')
                     
                     else:
-                        WaveHead_temp.append(WaveHead[row_argmax]+bridge[:])
+                        WaveHead_temp.append(WaveHead[row_argmax]+bridge[1:])
                         WaveHead_dist_temp.append(WaveHead_dist[row_argmax] + 
                                                                 bridge_dist)
                         WaveHead_rd_id_len_temp.append(

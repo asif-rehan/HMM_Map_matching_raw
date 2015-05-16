@@ -3,14 +3,16 @@ class CandidatePointObject:
     each candidate point object has its own attributes '''
     
     def __init__(self,cand_pt_northing, cand_pt_easting, 
-                            cand_pt_road_id, cand_pt_emission_prob):
+                            cand_pt_road_id, cand_pt_timestamp,
+                            cand_pt_emission_prob):
         self.cand_pt_northing = cand_pt_northing
         self.cand_pt_easting = cand_pt_easting
         self.cand_pt_road_id = cand_pt_road_id
+        self.cand_pt_timestamp = cand_pt_timestamp
         self.cand_pt_emission_prob = cand_pt_emission_prob
             
 
-def list_cand_point_constructor(shapely_buffer, shapely_point, 
+def list_cand_point_constructor(shapely_buffer, shapely_point, timestamp,
                              path_to_road_network_shapefile, 
                              gps_mean, gps_std_dev):
     '''
@@ -49,6 +51,7 @@ def list_cand_point_constructor(shapely_buffer, shapely_point,
                                 cand_pt_easting =candidate_point[0][0],
                                 cand_pt_northing = candidate_point[0][1],
                                 cand_pt_road_id = rec['id'],
+                                cand_pt_timestamp = timestamp,
                                 cand_pt_emission_prob =emission_prob)
                 list_cand_pt.append(candidate_point)
                 

@@ -27,6 +27,7 @@ class ObsPoint:
         self.candidate_points = list_cand_point_constructor(
                                     self.buffered, 
                                     self.gps_point, 
+                                    self.timestamp,
                                     road_net_shp, 
                                     self.gps_mean, self.gps_std_dev)
     
