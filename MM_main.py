@@ -260,6 +260,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
         print " max_prob_path  ", max_prob_path
         print " max_prob  ", max_prob
         print " max_prob_dist  ", max_prob_path_dist
+        print " max_prob_dist  ", max_prob_path_rd_id_len
         return max_prob, max_prob_path_dist,   \
                 max_prob_path, max_prob_path_rd_id_len
     
@@ -278,7 +279,6 @@ if __name__ == '__main__':
         road_net_shp = "MM_AR/Relevant_files/LineString_Road_Network_UTM.shp",
         road_net_multigraph_pickled = "MM_AR/Relevant_files/MultiGraph.p",
         beta=1)
-    print out
     print "--- {0} seconds ---".format(time.time() - start_time)
 sys.stdout.close()
 sys.stderr = sys.__stderr__
