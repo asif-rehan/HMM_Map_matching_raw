@@ -3,10 +3,12 @@ from MM_AR.HMM_procedure.transition_weight \
     import TransitionWeight
 import pickle
 import numpy as np
+import pandas as pd
 from MM_AR.HMM_procedure.ReadFile import read_data_point
 import time
 import sys
 import os
+
 
 this_dir =  os.path.dirname(__file__)
 
@@ -257,12 +259,23 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
         max_prob_path = WaveHead[pick_max]
         max_prob_path_dist = WaveHead_dist[pick_max]
         max_prob_path_rd_id_len = WaveHead_rd_id_len[pick_max]
+      
+        edge_output_df = pd.DataFrame(max_prob_path_rd_id_len, 
+                     columns=['road_id', 'length travelled'])
+        node_output_df = pd.DataFrame(max_prob_path, 
+                                      columns=[ '(easting,northing)', 
+                                                'timestamp if GPS pt', 
+                                                'node_id if node'])
+        
         print " max_prob_path  ", max_prob_path
         print " max_prob  ", max_prob
         print " max_prob_dist  ", max_prob_path_dist
         print " max_prob_dist  ", max_prob_path_rd_id_len
+        print " node_outout  = \n ", node_output_df, '\n'
+        print " edge_outout  = \n ", edge_output_df
+
         return max_prob, max_prob_path_dist,   \
-                max_prob_path, max_prob_path_rd_id_len
+                node_output_df, edge_output_df
     
     except UnboundLocalError:
         print 'Stationary object'
@@ -279,6 +292,7 @@ if __name__ == '__main__':
         road_net_shp = "MM_AR/Relevant_files/LineString_Road_Network_UTM.shp",
         road_net_multigraph_pickled = "MM_AR/Relevant_files/MultiGraph.p",
         beta=1)
+    print out
     print "--- {0} seconds ---".format(time.time() - start_time)
 sys.stdout.close()
 sys.stderr = sys.__stderr__
