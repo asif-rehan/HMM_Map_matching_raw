@@ -61,7 +61,7 @@ class TransitionWeight(object):
                                         G, cp1_e_n_d[i]['node'], 
                                            cp2_e_n_d[j]['node'], weight='len')
                 except KeyError:
-                    print 'KeyError'
+                    #print 'KeyError'
                     #print "cp1_e_n_d[i]['node']", cp1_e_n_d[i]['node']
                     #print "cp1_e_n_d[j]['node']", cp1_e_n_d[j]['node']
                     end_to_end_dist = float('inf')

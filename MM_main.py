@@ -13,11 +13,11 @@ import os
 this_dir =  os.path.dirname(__file__)
 
 
-sys.stdout=open('output_{0}_{1}.txt'.format(time.strftime('%Y-%m-%dT%H.%M.%S', 
-                                            time.localtime()), 
-                                            'orng_20141014'), 'w')
+#sys.stdout=open('output_{0}_{1}.txt'.format(time.strftime('%Y-%m-%dT%H.%M.%S', 
+#                                            time.localtime()), 
+#                                            'orng_20141014'), 'w')
 
-start_time = time.time()
+#tart_time = time.time()
 
 def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id, 
             gps_mean=0, gps_std_dev=7, circ_radius=30,
@@ -59,7 +59,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
     points = []    
     try:
         for GPSrecord in PointGenerator:
-            print 'rec ', record
+#            print 'rec ', record
             if record == 0:   
                 #print "IF starts"
                 #print 'rec ', record     
@@ -119,17 +119,17 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                     #print 'GPS point', p.gps_easting, p.gps_northing
                 row_len = len(points[0].candidate_points)
                 col_len = len(points[1].candidate_points)
-                print "(row_len, col_len) = (", row_len, col_len, ")"
+#                print "(row_len, col_len) = (", row_len, col_len, ")"
                 
                 
-                for pos in xrange(row_len):
-                    print ('points[0]',
-                    points[0].candidate_points[pos].cand_pt_easting,
-                            points[0].candidate_points[pos].cand_pt_northing) 
-                for pos in xrange(col_len):
-                    print ('points[1]',
-                    points[1].candidate_points[pos].cand_pt_easting,
-                            points[1].candidate_points[pos].cand_pt_northing)
+#                for pos in xrange(row_len):
+#                    print ('points[0]',
+#                    points[0].candidate_points[pos].cand_pt_easting,
+#                            points[0].candidate_points[pos].cand_pt_northing) 
+#                for pos in xrange(col_len):
+#                    print ('points[1]',
+#                    points[1].candidate_points[pos].cand_pt_easting,
+#                            points[1].candidate_points[pos].cand_pt_northing)
                 
                 #check and remove the points with no candidate points or if it is 
                 # the same as the immediately previous point
@@ -179,8 +179,8 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                     points[1] = points[0] 
                     continue
                 
-                print "TransWeightMatrix",TransWeightMatrix
-                print record, "EmissionProbMatrix",lnEmissionProbMatrix
+#               print "TransWeightMatrix",TransWeightMatrix
+#                print record, "EmissionProbMatrix",lnEmissionProbMatrix
                 try:
                     
                     sum_row_wt = np.sum(TransWeightMatrix, axis=1)
@@ -201,12 +201,12 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                     print RuntimeWarning
                 #    print 'p=', p, 'record=', record
                 
-                print "log_sum_row_wt \n", ln_sum_row_wt
-                print "lnTransProbMatrix \n", lnTransProbMatrix
+#                print "log_sum_row_wt \n", ln_sum_row_wt
+#                print "lnTransProbMatrix \n", lnTransProbMatrix
                 
                 
                 lnHTE = lnHeadProbVec + lnTransProbMatrix +lnEmissionProbMatrix
-                print 'lnHTE\n', lnHTE
+#                print 'lnHTE\n', lnHTE
                 lnHeadProbVec = np.max(lnHTE, axis = 0).reshape(
                                                             (lnHTE.shape[1],1)) 
                 if lnHeadProbVec.max() == -float('inf'):
@@ -215,7 +215,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                 #head prob values
                 #find the row-column positions of the maximum values for 
                 #max-probable cand_pt_t
-                print "lnHeadProbVec \n", lnHeadProbVec
+#                print "lnHeadProbVec \n", lnHeadProbVec
                 
                 WaveHead_temp = []
                 WaveHead_dist_temp = []
@@ -230,7 +230,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                     bridge_rd_id_len =   \
                                 TransitionObjMatrix[row_argmax][col_argmax].\
                                                             sp_rd_id_len
-                    print 'bridge', bridge, bridge_dist
+#                    print 'bridge', bridge, bridge_dist
                     if record == 1:
                         WaveHead_temp.append(bridge)
                         WaveHead_dist_temp.append(WaveHead_dist[row_argmax] + 
@@ -249,8 +249,8 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                 WaveHead = WaveHead_temp
                 WaveHead_dist = WaveHead_dist_temp
                 WaveHead_rd_id_len = WaveHead_rd_id_len_temp
-                print "WaveHead"
-                print zip(WaveHead_dist, WaveHead)
+#                print "WaveHead"
+#                print zip(WaveHead_dist, WaveHead)
                 
             record += 1
             
@@ -267,18 +267,18 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                                                 'timestamp if GPS pt', 
                                                 'node_id if node'])
         
-        print " max_prob_path  ", max_prob_path
-        print " max_prob  ", max_prob
-        print " max_prob_dist  ", max_prob_path_dist
-        print " max_prob_dist  ", max_prob_path_rd_id_len
-        print " node_outout  = \n ", node_output_df, '\n'
-        print " edge_outout  = \n ", edge_output_df
+#        print " max_prob_path  \n", max_prob_path
+#        print "\n max_prob  ", max_prob
+#        print "\n max_prob_dist  ", max_prob_path_dist
+#        print "\n max_prob_dist  ", max_prob_path_rd_id_len
+#        print "\n node_outout  = \n ", node_output_df, '\n'
+#        print "\n edge_outout  = \n ", edge_output_df
 
         return max_prob, max_prob_path_dist,   \
                 node_output_df, edge_output_df
     
     except UnboundLocalError:
-        print 'Stationary object'
+#        print 'Stationary object'
         return None
         
     #assumption: no tied value for likelihood calculation
@@ -292,7 +292,6 @@ if __name__ == '__main__':
         road_net_shp = "MM_AR/Relevant_files/LineString_Road_Network_UTM.shp",
         road_net_multigraph_pickled = "MM_AR/Relevant_files/MultiGraph.p",
         beta=1)
-    print out
-    print "--- {0} seconds ---".format(time.time() - start_time)
+#    print "--- {0} seconds ---".format(time.time() - start_time)
 sys.stdout.close()
 sys.stderr = sys.__stderr__
