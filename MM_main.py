@@ -133,11 +133,13 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                 
                 #check and remove the points with no candidate points or if it is 
                 # the same as the immediately previous point
-                if points[0] == points[1] or col_len == 0:
-                    #print 'ignore current!'
-                    record += 1
-                    points[1] = points[0] 
-                    continue
+                #==============================================================
+                # if points[0] == points[1] or col_len == 0:
+                #     #print 'ignore current!'
+                #     record += 1
+                #     points[1] = points[0] 
+                #     continue
+                #==============================================================
                 
                 #print (p2.__dict__)          
                 #print 'len p2.candidate points', len(p2.candidate_points)
@@ -261,11 +263,11 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
         max_prob_path_rd_id_len = WaveHead_rd_id_len[pick_max]
       
         edge_output_df = pd.DataFrame(max_prob_path_rd_id_len, 
-                     columns=['road_id', 'length travelled'])
+                     columns=['road_id', 'length'])
         node_output_df = pd.DataFrame(max_prob_path, 
-                                      columns=[ '(easting,northing)', 
-                                                'timestamp if GPS pt', 
-                                                'node_id if node'])
+                                      columns=[ 'easting_northing', 
+                                                'timestamp', 
+                                                'node_id'   ])
         
 #        print " max_prob_path  \n", max_prob_path
 #        print "\n max_prob  ", max_prob
@@ -292,6 +294,7 @@ if __name__ == '__main__':
         road_net_shp = "MM_AR/Relevant_files/LineString_Road_Network_UTM.shp",
         road_net_multigraph_pickled = "MM_AR/Relevant_files/MultiGraph.p",
         beta=1)
+    print out[2], "\n", out[3] 
 #    print "--- {0} seconds ---".format(time.time() - start_time)
 sys.stdout.close()
 sys.stderr = sys.__stderr__
