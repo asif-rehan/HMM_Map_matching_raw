@@ -14,7 +14,7 @@ if __name__ == "__main__":
     src_files = [f for f in os.listdir(src_fldr)   \
                      if os.path.isfile(os.path.join(src_fldr, f))]
         
-    for f in src_files:
+    for f in src_files[11:]:
         datafile = os.path.join(src_fldr, f)
         ret = Viterbi(datafile, lon_col_id=1, lat_col_id=2, timestamp_col_id=0,
            road_net_shp=r"C:\Users\asr13006\Google Drive\UConn MS\Py Codes\ETA_KRR\_files/LineString_Road_Network_UTM.shp",           
