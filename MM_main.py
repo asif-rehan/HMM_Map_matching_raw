@@ -91,8 +91,8 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                               [[np.log(cand_pt_0.cand_pt_emission_prob)]], 
                               axis = 0)
                     #WaveHead.append(None)
-                    WaveHead.append([((cand_pt_0.cand_pt_easting, 
-                                     cand_pt_0.cand_pt_northing), 
+                    WaveHead.append([(cand_pt_0.cand_pt_easting, 
+                                     cand_pt_0.cand_pt_northing, 
                                       cand_pt_0.cand_pt_timestamp)])
                     WaveHead_dist.append(0)
                     WaveHead_rd_id_len.append([])
@@ -265,7 +265,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
         edge_output_df = pd.DataFrame(max_prob_path_rd_id_len, 
                      columns=['road_id', 'length'])
         node_output_df = pd.DataFrame(max_prob_path, 
-                                      columns=[ 'easting_northing', 
+                                      columns=[ 'easting', 'northing', 
                                                 'timestamp', 
                                                 'node_id'   ])
         

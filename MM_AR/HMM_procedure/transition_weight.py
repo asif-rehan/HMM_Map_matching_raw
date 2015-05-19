@@ -80,16 +80,18 @@ class TransitionWeight(object):
                                            cp1_e_n_d[i]['node'], 
                                            cp2_e_n_d[j]['node'], 
                                            weight='len')
+                    e2e_easting, e2_northing = zip(*end_to_end_seq)
                     end_to_end_node_id_seq =   \
-                            [G.node[nd]['node_id'] for nd in end_to_end_seq]                       
-                    sp_nodes= list([((cand_pt1.cand_pt_easting,
-                                          cand_pt1.cand_pt_northing), 
+                            [G.node[nd]['node_id'] for nd in end_to_end_seq]
+                                            
+                    sp_nodes= list([(cand_pt1.cand_pt_easting,
+                                          cand_pt1.cand_pt_northing, 
                                      cand_pt1.cand_pt_timestamp, '0')]
-                                   + zip(end_to_end_seq,
+                                   + zip(e2e_easting, e2_northing,
                                          [0]*len(end_to_end_seq), 
                                          end_to_end_node_id_seq) +
-                                   [((cand_pt2.cand_pt_easting,
-                                     cand_pt2.cand_pt_northing),
+                                   [(cand_pt2.cand_pt_easting,
+                                     cand_pt2.cand_pt_northing,
                                     cand_pt2.cand_pt_timestamp, '0')])
                     end_to_end_rd_id_len =[]
                     for q in range(len(end_to_end_seq)-1):
@@ -122,11 +124,11 @@ class TransitionWeight(object):
         cp2_e_n_d = self.end_nodes_dist(cand_pt2, shapefile)
         shortest_path_length = abs(cp1_e_n_d[0]['dist']
                                                - cp2_e_n_d[0]['dist'])
-        sp_nodes=   [((cand_pt1.cand_pt_easting, 
-                        cand_pt1.cand_pt_northing),
+        sp_nodes=   [(cand_pt1.cand_pt_easting, 
+                        cand_pt1.cand_pt_northing,
                             cand_pt1.cand_pt_timestamp, '0')]   \
-                  + [((cand_pt2.cand_pt_easting,
-                        cand_pt2.cand_pt_northing), 
+                  + [(cand_pt2.cand_pt_easting,
+                        cand_pt2.cand_pt_northing, 
                             cand_pt2.cand_pt_timestamp, '0')]
         sd = shortest_path_length
         sp_rd_id_len = [(cand_pt1.cand_pt_road_id, sd)] 
