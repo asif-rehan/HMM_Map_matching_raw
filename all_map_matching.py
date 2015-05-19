@@ -17,6 +17,7 @@ if __name__ == "__main__":
         
     for f in src_files:
         datafile = os.path.join(src_fldr, f)
-        ret = Viterbi(datafile, lon_col_id=1, lat_col_id=2, timestamp_col_id=0)
+        ret = Viterbi(datafile, lon_col_id=1, lat_col_id=2, timestamp_col_id=0,
+                      )
         ret[2].to_csv(os.path.join(out_fldr , 'node_' + f))
         ret[3].to_csv(os.path.join(out_fldr , 'edge_' + f))
