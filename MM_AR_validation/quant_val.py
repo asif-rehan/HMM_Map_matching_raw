@@ -15,20 +15,25 @@ from matplotlib import pyplot as plt
 from MM_AR_validation.validation import Validate
 
 def check_consistency(file_lst):
-    
+    """Just enumerates the number of files for each route, TOD and DOW type"""
     rout = Counter([title[0:2] for title in file_lst]).most_common()
     dow  = Counter([title[3:6] for title in file_lst]).most_common()
     tod  = Counter([title[7:9] for title in file_lst]).most_common()
     return rout, dow, tod
 
 def total_obs_line(src_files_list):
+    """counts the total number of GPS points in all the test data files"""
     tot = reduce(lambda x, y: x+y  , 
            [len(pd.read_csv(os.path.join(src_fldr, f))) for f in src_files])
     return tot
 
 def get_ckt_len(rt):
     """lengths derived from Network Analyst, older lengths derived 
-    routes selected by attribute is shown as comments""" 
+    routes selected by attribute is shown as comments
+    
+    Returns
+    ------
+    Corresponding length for the route""" 
     lengths_m = {'bl': 9176.7424600679387, #9218.790807 #9455.5534712264089, 
                  'pl':  17018.92900208267, #17035.219224  #17006.976707619033, 
                  'yl':   9992.9846325657236, #10154.704534 #9988.4613670575709, 
@@ -51,6 +56,7 @@ def diagnostic_plot(mm_seq, label, out_fldr, src_file, freq, out_file_path):
     return None
 
 def err_val(src_fldr, src_file, out_fldr, des_freq=None):
+    
     df = pd.read_csv(os.path.join(src_fldr, src_file), 
                      parse_dates=['utc_time_stamp'], 
                      index_col='utc_time_stamp')
@@ -61,25 +67,24 @@ def err_val(src_fldr, src_file, out_fldr, des_freq=None):
     if des_freq == None:
         des_freq = int(med_freq_fl)
     
-    jump = int(round(des_freq/med_freq_fl))
     out_file = src_file[:-4]+'_freq{}'.format(des_freq)+'.csv'
     out_file_path = os.path.join(out_fldr, out_file)
     
-    selected = df[::jump]
-    del df
-    #now add the first sampled point to the end with extended timestamp
-    #to keep the circuit from discontinuity between end to start points
-    selected = selected.append(selected.head(1))
-    selected.tail(1).index.values[0] = selected[-2:-1].index.values[0] +   \
-                                                np.timedelta64(des_freq, 's')
-    selected.to_csv(out_file_path)
-
+    if not os.path.exists(out_file_path):
+        jump = int(round(des_freq/med_freq_fl))
+        selected = df[::jump]
+        del df
+        #now add the first sampled point to the end with extended timestamp
+        #to keep the circuit from discontinuity between end to start points
+        selected = selected.append(selected.head(1))
+        selected.tail(1).index.values[0] = selected[-2:-1].index.values[0] +   \
+                                                    np.timedelta64(des_freq, 's')
+        selected.to_csv(out_file_path)
     mm_out = MM_main.Viterbi(os.path.join(out_fldr, out_file), 
                         lon_col_id=1, 
                         lat_col_id=2, 
                         timestamp_col_id=0,
                         gps_mean=0, gps_std_dev=7, circ_radius=30)
-    mm_out[2] 
     diagnostic_plot(mm_out[2], src_file[:-4], out_fldr, src_file, des_freq,
                     out_file_path)
     trav_len = get_ckt_len(out_file[:2])

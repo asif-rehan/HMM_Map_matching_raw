@@ -52,7 +52,6 @@ road_net_shp = os.path.join(this_dir,
 #                           r'Relevant_files\editing_alumni_rd',
 #                           'LineString_Road_Network_UTM2.shp') 
 
-
 #road_net_shp = "C:/Users/asr13006/Desktop/Thesis/Copy of Data Reservoir/\
 #routes/County 13/road network micro/nxspatial3/NF/copy/TransformCRS/\
 #LineString_Road_Network_UTM.shp" 
