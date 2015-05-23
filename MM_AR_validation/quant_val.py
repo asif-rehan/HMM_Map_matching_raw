@@ -27,12 +27,14 @@ def total_obs_line(src_files_list):
     return tot
 
 def get_ckt_len(rt):
-    lengths_m = {'bl'  :  9455.5534712264089, 
-                 'pl': 17006.976707619033, 
-                 'yl':  9988.4613670575709, 
-                 'gr' : 10441.173470569714, 
-                 'or':  5107.549615113172, 
-                 'rd'   :  7573.1108462968787}
+    """lengths derived from Network Analyst, older lengths derived 
+    routes selected by attribute is shown as comments""" 
+    lengths_m = {'bl'  :  9218.790807, #9455.5534712264089, 
+                 'pl': 17035.219224, #17006.976707619033, 
+                 'yl':  10154.704534, #9988.4613670575709, 
+                 'gr' : 10557.913355, #10441.173470569714, 
+                 'or':  5164.395418, #5107.549615113172, 
+                 'rd'   :  7312.571459} #7573.1108462968787}
     return lengths_m[rt]
 
 def diagnostic_plot(mm_seq, label, out_fldr, src_file, freq, out_file_path):
