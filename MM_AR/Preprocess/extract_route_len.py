@@ -2,6 +2,24 @@ import fiona
 import pyproj
 from shapely.geometry import LineString, shape
 import pandas as pd
+from simpledbf import Dbf5
+
+
+def route_len_from_route_traverse_frequency(data_dbf):
+    """data is the dbf file for the network shp.
+    The linestring shapefile has an attribute for each feature.  
+    The attribute is the number (e.g. '2' times) of times the particular 
+    road link is visited by the vehicle on that route. 
+    There should be one such column for each route.
+    """
+    data = Dbf5(data_dbf).to_dataframe()
+    dict_len = {}
+    for route in data.columns[6:12]:
+        len = data.apply(lambda row :   \
+                         float(row[route])*row['Length_met'], axis=1).sum()
+        dict_len.update({route:len})
+    return dict_len
+
 
 def extract_route_len(source_file):
     '''
@@ -61,7 +79,7 @@ def route_ckt_len(single_vis, routes, multivisits):
     ------
     a dictionary with route names as keys and corresponding lengths as values
     """
-    from simpledbf import Dbf5
+
     lengths = {'Blue': 0, 'Red': 0, 'Green': 0, 'Yellow': 0, 
                'Purple': 0, 'Orange': 0}
     sin_vis = Dbf5(single_vis).to_dataframe()[routes+['Length_met']]
