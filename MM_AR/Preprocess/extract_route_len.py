@@ -95,29 +95,32 @@ def route_ckt_len(single_vis, routes, multivisits):
     
     
 if __name__ == "__main__":
-    import  os
-    source_file = os.path.join(r'C:\Users\asr13006\Desktop\Thesis',
-                               'Copy of Data Reservoir\routes\County 13',
-                               'Road_network_micro.shp')
-    #print extract_route_len(source_file)
-    source_file = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
-                            'Py Codes\HMM_Krumm_Newson_Implementation',
-                            'MM_AR\Relevant_files',
-                            'LineString_Road_Network_UTM.shp')
-    
-    sin_vis = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
-                            'Py Codes\HMM_Krumm_Newson_Implementation',
-                            'MM_AR\Relevant_files',
-                            'LineString_Road_Network_UTM.dbf')
-    routes = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']
-    multivisits = {}
-    for rt in routes: 
-        multivisits[rt] = os.path.join(r'C:\Users\asr13006\Google Drive',
-                                       'UConn MS',
-                                  r'Py Codes\HMM_Krumm_Newson_Implementation',
-                                  r'MM_AR\Relevant_files',
-                                  'route_length_double_visits',
-                                  r'{}_double\{}_double.dbf'.format(rt, rt))    
-    print  route_ckt_len(sin_vis, routes, multivisits)
+    pass
+    #==========================================================================
+    # import  os
+    # source_file = os.path.join(r'C:\Users\asr13006\Desktop\Thesis',
+    #                            'Copy of Data Reservoir\routes\County 13',
+    #                            'Road_network_micro.shp')
+    # #print extract_route_len(source_file)
+    # source_file = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
+    #                         'Py Codes\HMM_Krumm_Newson_Implementation',
+    #                         'MM_AR\Relevant_files',
+    #                         'LineString_Road_Network_UTM.shp')
+    # 
+    # sin_vis = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
+    #                         'Py Codes\HMM_Krumm_Newson_Implementation',
+    #                         'MM_AR\Relevant_files',
+    #                         'LineString_Road_Network_UTM.dbf')
+    # routes = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']
+    # multivisits = {}
+    # for rt in routes: 
+    #     multivisits[rt] = os.path.join(r'C:\Users\asr13006\Google Drive',
+    #                                    'UConn MS',
+    #                               r'Py Codes\HMM_Krumm_Newson_Implementation',
+    #                               r'MM_AR\Relevant_files',
+    #                               'route_length_double_visits',
+    #                               r'{}_double\{}_double.dbf'.format(rt, rt))    
+    # print  route_ckt_len(sin_vis, routes, multivisits)
+    #==========================================================================
 
     
