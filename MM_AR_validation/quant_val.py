@@ -83,7 +83,7 @@ def get_confusion_matrix(gnd_trth_rd_ids, mm_rd_ids):
     precision = float(cm[0][0])/(cm[0][0] + cm[0][1])*100
     accuracy = float(cm[0][0] + cm[1][1])/np.sum(cm)  *100
     specificity = float(cm[1][1])/  (cm[0][1] + cm[1][1])*100
-    FNR = float(cm[1][0])/  (cm[0][1] + cm[1][0])*100
+    FNR = float(cm[1][0])/  (cm[0][0] + cm[1][0])*100
     return round(recall, 2), round(precision, 2), round(accuracy, 2),  \
             round(specificity, 2), round(FNR, 2)
 
@@ -131,9 +131,9 @@ def err_val(src_fldr, src_file, out_fldr, dbf_of_shp, des_freq=None):
                         timestamp_col_id=0,
                         gps_mean=0, gps_std_dev=7, circ_radius=30)
     mm_out[2].to_csv(os.path.join(out_fldr,
-                                  'node_freq{}'.format(des_freq_str)+src_file))
+                                  'node_freq{}_'.format(des_freq_str)+src_file))
     mm_out[3].to_csv(os.path.join(out_fldr , \
-                                  'edge_freq{}'.format(des_freq_str)+src_file))
+                                  'edge_freq{}_'.format(des_freq_str)+src_file))
     
     diagnostic_plot(zip(mm_out[2]['easting'], mm_out[2]['northing']), 
                     src_file[:-4], out_fldr, src_file, des_freq,
