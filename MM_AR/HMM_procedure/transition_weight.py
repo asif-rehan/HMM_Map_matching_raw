@@ -86,13 +86,13 @@ class TransitionWeight(object):
                                             
                     sp_nodes= list([(cand_pt1.cand_pt_easting,
                                           cand_pt1.cand_pt_northing, 
-                                     cand_pt1.cand_pt_timestamp, '-1')]
+                                     cand_pt1.cand_pt_timestamp, -1)]
                                    + zip(e2e_easting, e2_northing,
                                          [0]*len(end_to_end_seq), 
                                          end_to_end_node_id_seq) +
                                    [(cand_pt2.cand_pt_easting,
                                      cand_pt2.cand_pt_northing,
-                                    cand_pt2.cand_pt_timestamp, '-1')])
+                                    cand_pt2.cand_pt_timestamp, -1)])
                     end_to_end_rd_id_len =[]
                     for q in range(len(end_to_end_seq)-1):
                         edge_info = G[end_to_end_seq[q]][end_to_end_seq[q+1]]
@@ -100,10 +100,10 @@ class TransitionWeight(object):
                         rd_len = edge_info.values()[0]['len']
                         end_to_end_rd_id_len.append((rd_id, rd_len))
                     
-                    sp_rd_id_len = list([(cand_pt1.cand_pt_road_id,  
+                    sp_rd_id_len = list([(float(cand_pt1.cand_pt_road_id),  
                                      cp1_e_n_d[i]['dist'])] 
                                     +  end_to_end_rd_id_len +
-                                     [(cand_pt2.cand_pt_road_id,
+                                     [(float(cand_pt2.cand_pt_road_id),
                                        cp2_e_n_d[j]['dist'])])       
                              
                                 

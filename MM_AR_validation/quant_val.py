@@ -77,7 +77,8 @@ def get_confusion_matrix(gnd_trth_rd_ids, mm_rd_ids):
     mm_rd_ids : road -id's map-matched on. Array with all unique road id's
     """
     cmn_mm_rd = [i in mm_rd_ids for i in xrange(len(gnd_trth_rd_ids))] 
-    cm = confusion_matrix(gnd_trth_rd_ids, cmn_mm_rd, labels=[True, False])
+    cm = confusion_matrix(gnd_trth_rd_ids, pd.DataFrame(cmn_mm_rd),  \
+                          labels=[True, False])
     print cm
     recall = float(cm[0][0])/(cm[0][0] + cm[1][0])*100
     precision = float(cm[0][0])/(cm[0][0] + cm[0][1])*100
