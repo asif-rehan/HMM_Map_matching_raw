@@ -14,8 +14,8 @@ def plt_err_vs_freq_on_route(dataframe, xvar, yvar, var3,
     for uniq in uniq_var3:
         subset = dataframe[dataframe[var3] == uniq]
         plt.scatter(subset[xvar], subset[yvar], 
-             color=col[uniq], marker=mar[uniq], alpha=0.75, label=leg[uniq])
-    plt.legend(loc='lower right',
+             color=col[uniq], marker=mar[uniq], alpha=0.65, label=leg[uniq])
+    plt.legend(loc='lower left',
           fontsize='xx-small')
     if yvar == 'Error':
         plt.axhline(y=0,xmin=0,xmax=65,c="k",linewidth=0.5,zorder=0)
@@ -24,14 +24,7 @@ def plt_err_vs_freq_on_route(dataframe, xvar, yvar, var3,
     plt.title('%{} vs Frequency for {}'.format(yvar, var3))
     plt.xlabel('Frequency')
     plt.ylabel('%{}'.format(yvar))
-    plt.show()
-
-def check_T_test(criterion, df):
-    for c in combinations(df[criterion].unique(), 2):
-        df[df == c[0]]
-        
-        
-    
+    plt.show()    
     
     
 out_fldr = os.path.join(r'C:\\Users\\asr13006\\Google Drive\\UConn MS',
@@ -75,6 +68,13 @@ for cat in ['Freq' ,'Route', 'DOW', 'TOD']:
                         r'MM_AR_validation\val_graphs', 
                         '{}_{}.png'.format(metric, cat)))
         plt.show()'''
+#==============================================================================
+# Version 2.0
+#==============================================================================
+out_datafile = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
+     r'Py Codes\HMM_Krumm_Newson_Implementation\MM_AR_validation\val_dataset',
+     r'val_dataset_output\complete_output.csv')
+out_df = pd.read_csv(out_datafile) 
 ##########################################################################
 #     V3 = ROUTE
 ##########################################################################

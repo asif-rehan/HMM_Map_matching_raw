@@ -100,10 +100,10 @@ class TransitionWeight(object):
                         rd_len = edge_info.values()[0]['len']
                         end_to_end_rd_id_len.append((rd_id, rd_len))
                     
-                    sp_rd_id_len = list([(float(cand_pt1.cand_pt_road_id),  
+                    sp_rd_id_len = list([(int(cand_pt1.cand_pt_road_id),  
                                      cp1_e_n_d[i]['dist'])] 
                                     +  end_to_end_rd_id_len +
-                                     [(float(cand_pt2.cand_pt_road_id),
+                                     [(int(cand_pt2.cand_pt_road_id),
                                        cp2_e_n_d[j]['dist'])])       
                              
                                 
@@ -131,7 +131,7 @@ class TransitionWeight(object):
                         cand_pt2.cand_pt_northing, 
                             cand_pt2.cand_pt_timestamp, '-1')]
         sd = shortest_path_length
-        sp_rd_id_len = [(cand_pt1.cand_pt_road_id, sd)] 
+        sp_rd_id_len = [(int(cand_pt1.cand_pt_road_id), sd)] 
         return sd, sp_nodes, sp_rd_id_len
     
     def shortest_path(self, cand_pt1, cand_pt2, G, shapefile):

@@ -132,9 +132,9 @@ def err_val(src_fldr, src_file, out_fldr, dbf_of_shp, des_freq=None):
                         timestamp_col_id=0,
                         gps_mean=0, gps_std_dev=7, circ_radius=30)
     mm_out[2].to_csv(os.path.join(out_fldr,
-                                  'node_freq{}_'.format(des_freq_str)+src_file))
+                                'node_freq{}_'.format(des_freq_str)+src_file))
     mm_out[3].to_csv(os.path.join(out_fldr , \
-                                  'edge_freq{}_'.format(des_freq_str)+src_file))
+                                'edge_freq{}_'.format(des_freq_str)+src_file))
     
     diagnostic_plot(zip(mm_out[2]['easting'], mm_out[2]['northing']), 
                     src_file[:-4], out_fldr, src_file, des_freq,
@@ -185,11 +185,8 @@ def quant_score(src_files, src_fldr, out_fldr, dbf_of_shp, des_freq_lst):
                                             time.localtime()))
             tab.to_csv(os.path.join(out_fldr, output_file))
     return tab
-
-
     
 if __name__ == "__main__":
-
     out_fldr = os.path.join(r'C:\Users\asr13006\Google Drive\UConn MS',
       r'Py Codes/HMM_Krumm_Newson_Implementation\MM_AR_validation\val_dataset',
       'val_dataset_output')
