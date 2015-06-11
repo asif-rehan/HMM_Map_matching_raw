@@ -5,8 +5,8 @@ import pickle
 import numpy as np
 import pandas as pd
 from MM_AR.HMM_procedure.ReadFile import read_data_point
-import time
-import sys
+#import time
+#import sys
 import os
 
 
@@ -142,8 +142,13 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
                 #     points[1] = points[0] 
                 #     continue
                 #==============================================================
-                if col_len == 0: # or points[0] == points[1] 
-                    #print 'ignore current!'
+                if col_len == 0: 
+                    #==========================================================
+                    #     or \
+                    #     (points[0].gps_easting,points[0].gps_northing) ==  \
+                    #     (points[1].gps_easting,points[1].gps_northing):
+                    # #print 'ignore current!'
+                    #==========================================================
                     record += 1
                     points[1] = points[0] 
                     continue

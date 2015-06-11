@@ -11,8 +11,15 @@ import pytz
 import datetime
 import fiona
 from MM_AR.GPS_point_cand_point.GPS_point import lat_long_to_UTM_point
-import  matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+import matplotlib.cm as cmp
+import matplotlib.colors as col
+from pylab import *
 import os
+from sklearn.preprocessing.data import MinMaxScaler
+
+
+
 class Validate(object):
     '''Validation class for MM algo'''
     def __init__(self, raw_shuttle_gps_file):
@@ -138,13 +145,22 @@ class Validate(object):
     def plot_roadnetwork(self, ax, fig, select=False, color='k',
             road_shp_file = os.path.join(os.path.dirname(__file__), os.pardir,
                     r"MM_AR/Relevant_files/LineString_Road_Network_UTM.shp"),
-                         zorder=1):
+                         zorder=1, heatmap=False, heatmap_cmap=None,
+                         heat_label='seconds'):
         '''
         plots the road network with matplotlib
-        fig = matplotlib.pyplot.figure()
-        ax = matplotlib.pyplot.axes()
-        id = optional, list of selected roads to be plotted
-            
+        fig : matplotlib.pyplot.figure()
+        ax : matplotlib.pyplot.axes()
+        id : optional, list of selected roads to be plotted
+        heatmap : False or a flattened array. 
+                plots road network with black lines
+                
+                if True, also provide heatmap_cmap. 
+                With both heatmap = True and heatmap_cmap as a flattened array, 
+                plots roads with different colors using attributes array, 
+        heatmap_cmap : flattened array with plotting attribute data for each 
+                        line shown as a road
+                  
         '''
         
         with fiona.open(road_shp_file) as road_shp:
@@ -152,12 +168,30 @@ class Validate(object):
                 records = xrange(len(road_shp))
             else:
                 records = select
-            for i in records:                
-                line = road_shp[i]['geometry']['coordinates']
-                (line_easting, line_northing) = zip(*line)
-                ax.plot(line_easting, line_northing, color=color,
-                        linewidth=0.5, zorder=zorder)
-                        
+            if heatmap == True:
+                assert len(records) == len(heatmap_cmap)
+                col_map = plt.get_cmap('jet')
+                cNorm = col.Normalize(vmin=heatmap_cmap.min(), 
+                                      vmax=heatmap_cmap.max())
+                scalar_map = cmp.ScalarMappable(norm=cNorm, cmap=col_map)
+                ax.set_color_cycle([scalar_map.to_rgba(i) for 
+                                                            i in heatmap_cmap])
+                for i in records:                
+                    line = road_shp[i]['geometry']['coordinates']
+                    (line_easting, line_northing) = zip(*line)
+                    ax.plot(line_easting, line_northing, 
+                            linewidth=2.8, zorder=zorder)
+                    scalar_map.set_array(heatmap_cmap)
+                cbar = plt.colorbar(scalar_map, orientation='vertical')
+                cbar.set_label(heat_label, rotation=270)
+            if heatmap == False:                
+                for i in records:                
+                    line = road_shp[i]['geometry']['coordinates']
+                    (line_easting, line_northing) = zip(*line)
+                    ax.plot(line_easting, line_northing, color=color,
+                            linewidth=0.5, zorder=zorder)
+        ax.set_aspect('equal', 'datalim')
+        
     def plot_map_matched_path_points(self, map_matched_seq, 
                                      ax, fig, label=None, zorder=3):
         '''
