@@ -1,5 +1,6 @@
 import networkx as nx
 import fiona, pickle
+import pandas as pd
 import os
 #import matplotlib.pyplot as plt
 from fiona.crs import from_epsg
@@ -8,6 +9,7 @@ this_dir =  os.path.dirname(__file__)
 
 def CreateMultiGraph(road_net_shp):
     G = nx.MultiGraph()
+    link_id_len = {}
     with fiona.open(road_net_shp,crs= from_epsg(32618)) as shp:
         #driver='ESRI Shapefile'
         node_coord_to_id_dict = {}
@@ -21,13 +23,16 @@ def CreateMultiGraph(road_net_shp):
                     node_coord_to_id_dict[node] = node_id
                     node_id += 1
             length_meter = elem['properties']['Length_met']
+            link_id_len[int(elem['id'])] = length_meter
             G.add_edge(strt, end, 
                        len = length_meter, 
-                       key= int(elem['id']))     
+                       key= int(elem['id']))
+    link_id_ser = pd.Series(link_id_len.values(), index=link_id_len.keys()) 
     #node_id_to_coord_reverse = dict(zip(node_coord_to_id_dict.values(), 
     #                                 node_coord_to_id_dict.keys()))                  
     nx.set_node_attributes(G, 'node_id', node_coord_to_id_dict)
-    return G
+    return G, link_id_ser
+    
 def CreateMultiDiGraph(road_net_shp):
     G = nx.MultiDiGraph()
     with fiona.open(road_net_shp,crs= from_epsg(32618)) as shp:
@@ -57,8 +62,9 @@ road_net_shp = os.path.join(this_dir,
 #LineString_Road_Network_UTM.shp" 
 
 if __name__ == '__main__':
-    G = CreateMultiGraph(road_net_shp)
-    pickle.dump(G, open('../Relevant_files/MultiGraph.p', 'wb'))       
+    G, link_id_ser = CreateMultiGraph(road_net_shp)
+    pickle.dump(G, open('../Relevant_files/MultiGraph.p', 'wb'))
+    pickle.dump(link_id_ser, open('../Relevant_files/LinkIdLenSer.p', 'wb'))       
     #MDG = CreateMultiDiGraph(road_net_shp)
     #pickle.dump(MDG, open('../Relevant_files/MultiDiGraph.p', 'wb'))
     #print nx.dijkstra_path(G, (732805.0271117099, 4623614.515877712),
