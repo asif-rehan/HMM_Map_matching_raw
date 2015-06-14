@@ -17,6 +17,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.colors as col
 import os
 from sklearn.preprocessing.data import MinMaxScaler
+from ShiftedColorMap import shiftedColorMap
 
 
 
@@ -170,7 +171,7 @@ class Validate(object):
                 records = select
             if heatmap == True:
                 assert len(records) == len(heatmap_cmap)
-                col_map = plt.get_cmap('jet')
+                col_map = plt.get_cmap('coolwarm')
                 cNorm = col.Normalize(vmin=heatmap_cmap.min(), 
                                       vmax=heatmap_cmap.max())
                 scalar_map = cmp.ScalarMappable(norm=cNorm, cmap=col_map)
@@ -186,7 +187,7 @@ class Validate(object):
                 cax = divider.append_axes("right", size="5%", pad=0.05)
                 cbar = plt.colorbar(scalar_map, cax=cax, 
                                     orientation='vertical')
-                cbar.set_label(heat_label, rotation=0)
+                cbar.set_label(heat_label, rotation=270, labelpad= 12)
             if heatmap == False:                
                 for i in records:                
                     line = road_shp[i]['geometry']['coordinates']
