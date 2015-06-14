@@ -1,5 +1,5 @@
 import networkx as nx
-import fiona, pickle
+import fiona, pkl
 import pandas as pd
 import os
 #import matplotlib.pyplot as plt
@@ -63,10 +63,10 @@ road_net_shp = os.path.join(this_dir,
 
 if __name__ == '__main__':
     G, link_id_ser = CreateMultiGraph(road_net_shp)
-    pickle.dump(G, open('../Relevant_files/MultiGraph.p', 'wb'))
-    pickle.dump(link_id_ser, open('../Relevant_files/LinkIdLenSer.p', 'wb'))       
+    pkl.dump(G, open('../Relevant_files/MultiGraph.p', 'wb'))
+    pkl.dump(link_id_ser, open('../Relevant_files/LinkIdLenSer.p', 'wb'))       
     #MDG = CreateMultiDiGraph(road_net_shp)
-    #pickle.dump(MDG, open('../Relevant_files/MultiDiGraph.p', 'wb'))
+    #pkl.dump(MDG, open('../Relevant_files/MultiDiGraph.p', 'wb'))
     #print nx.dijkstra_path(G, (732805.0271117099, 4623614.515877712),
     #                              (729658.6308007092, 4630691.33944068), 'weight')
     

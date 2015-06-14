@@ -13,8 +13,8 @@ import fiona
 from MM_AR.GPS_point_cand_point.GPS_point import lat_long_to_UTM_point
 import matplotlib.pyplot as plt
 import matplotlib.cm as cmp
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.colors as col
-from pylab import *
 import os
 from sklearn.preprocessing.data import MinMaxScaler
 
@@ -182,8 +182,11 @@ class Validate(object):
                     ax.plot(line_easting, line_northing, 
                             linewidth=2.8, zorder=zorder)
                     scalar_map.set_array(heatmap_cmap)
-                cbar = plt.colorbar(scalar_map, orientation='vertical')
-                cbar.set_label(heat_label, rotation=270)
+                divider = make_axes_locatable(ax)
+                cax = divider.append_axes("right", size="5%", pad=0.05)
+                cbar = plt.colorbar(scalar_map, cax=cax, 
+                                    orientation='vertical')
+                cbar.set_label(heat_label, rotation=0)
             if heatmap == False:                
                 for i in records:                
                     line = road_shp[i]['geometry']['coordinates']

@@ -1,7 +1,7 @@
 from MM_AR.GPS_point_cand_point.GPS_point import ObsPoint 
 from MM_AR.HMM_procedure.transition_weight \
     import TransitionWeight
-import pickle
+import pickle as pkl
 import numpy as np
 import pandas as pd
 from MM_AR.HMM_procedure.ReadFile import read_data_point
@@ -48,7 +48,7 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
     '''   
     #print "MAIN RUNS"
      
-    MultiGraph = pickle.load(open(road_net_multigraph_pickled, 'rb'))
+    MultiGraph = pkl.load(open(road_net_multigraph_pickled, 'rb'))
     #pointgen for phones
     #PointGenerator = read_data_point(datafile, lon_col_id=5, 
     #                              lat_col_id=4, timestamp_col_id=9)
