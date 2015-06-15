@@ -171,10 +171,16 @@ class Validate(object):
                 records = select
             if heatmap == True:
                 assert len(records) == len(heatmap_cmap)
-                col_map = plt.get_cmap('coolwarm')
-                cNorm = col.Normalize(vmin=heatmap_cmap.min(), 
-                                      vmax=heatmap_cmap.max())
-                scalar_map = cmp.ScalarMappable(norm=cNorm, cmap=col_map)
+                
+                vmin=heatmap_cmap.min()
+                vmax=heatmap_cmap.max()
+                abs_max = max(abs(vmin), abs(vmax))
+                cmap = plt.get_cmap('RdBu')
+                cNorm = col.Normalize(vmin = -abs_max, 
+                                      vmax = abs_max)
+                norm = MidpointNormalize(midpoint=0)
+                scalar_map = cmp.ScalarMappable(norm=Norm, cmap=cmap)
+                scalar_map.set_array(heatmap_cmap)
                 ax.set_color_cycle([scalar_map.to_rgba(i) for 
                                                             i in heatmap_cmap])
                 for i in records:                
@@ -182,9 +188,11 @@ class Validate(object):
                     (line_easting, line_northing) = zip(*line)
                     ax.plot(line_easting, line_northing, 
                             linewidth=2.8, zorder=zorder)
-                    scalar_map.set_array(heatmap_cmap)
+                    
                 divider = make_axes_locatable(ax)
                 cax = divider.append_axes("right", size="5%", pad=0.05)
+                #cbar = plt.colorbar(scalar_map, cax=cax, 
+                #                    orientation='vertical')
                 cbar = plt.colorbar(scalar_map, cax=cax, 
                                     orientation='vertical')
                 cbar.set_label(heat_label, rotation=270, labelpad= 12)

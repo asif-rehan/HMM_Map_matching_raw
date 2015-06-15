@@ -62,3 +62,41 @@ def shiftedColorMap(cmap, start=0, midpoint=0.5, stop=1.0, name='shiftedcmap'):
     plt.register_cmap(cmap=newcmap)
 
     return newcmap
+
+if __name__ == "__main__":
+    biased_data = np.random.random_integers(low=-15, high=5, size=(37,37))
+    orig_cmap = matplotlib.cm.coolwarm
+    shifted_cmap = shiftedColorMap(orig_cmap, midpoint=0.75, name='shifted')
+    shrunk_cmap = shiftedColorMap(orig_cmap, start=0.15, midpoint=0.75, 
+                                  stop=0.85, name='shrunk')
+    
+    fig = plt.figure(figsize=(6,6))
+    grid = AxesGrid(fig, 111, nrows_ncols=(2, 2), axes_pad=0.5,
+                    label_mode="1", share_all=True,
+                    cbar_location="right", cbar_mode="each",
+                    cbar_size="7%", cbar_pad="2%")
+    
+    # normal cmap
+    im0 = grid[0].imshow(biased_data, interpolation="none", cmap=orig_cmap)
+    grid.cbar_axes[0].colorbar(im0)
+    grid[0].set_title('Default behavior (hard to see bias)', fontsize=8)
+    
+    im1 = grid[1].imshow(biased_data, interpolation="none", cmap=orig_cmap, 
+                         vmax=15, vmin=-15)
+    grid.cbar_axes[1].colorbar(im1)
+    grid[1].set_title('Centered zero manually,\nbut lost '+  \
+                      'upper end of dynamic range', fontsize=8)
+    
+    im2 = grid[2].imshow(biased_data, interpolation="none", cmap=shifted_cmap)
+    grid.cbar_axes[2].colorbar(im2)
+    grid[2].set_title('Recentered cmap with function', fontsize=8)
+    
+    im3 = grid[3].imshow(biased_data, interpolation="none", cmap=shrunk_cmap)
+    grid.cbar_axes[3].colorbar(im3)
+    grid[3].set_title('Recentered cmap with function\nand shrunk range', 
+                      fontsize=8)
+    
+    for ax in grid:
+        ax.set_yticks([])
+        ax.set_xticks([])
+        plt.show()
