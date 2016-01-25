@@ -17,7 +17,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.colors as col
 import os
 from sklearn.preprocessing.data import MinMaxScaler
-from ShiftedColorMap import shiftedColorMap
+from ShiftedColorBar import MidpointNormalize 
 
 
 
@@ -175,11 +175,11 @@ class Validate(object):
                 vmin=heatmap_cmap.min()
                 vmax=heatmap_cmap.max()
                 abs_max = max(abs(vmin), abs(vmax))
-                cmap = plt.get_cmap('RdBu')
+                cmap = plt.get_cmap('coolwarm')
                 cNorm = col.Normalize(vmin = -abs_max, 
                                       vmax = abs_max)
-                norm = MidpointNormalize(midpoint=0)
-                scalar_map = cmp.ScalarMappable(norm=Norm, cmap=cmap)
+                norm = MidpointNormalize(midpoint=0, vmin=vmin, vmax=vmax)
+                scalar_map = cmp.ScalarMappable(norm=norm, cmap=cmap)
                 scalar_map.set_array(heatmap_cmap)
                 ax.set_color_cycle([scalar_map.to_rgba(i) for 
                                                             i in heatmap_cmap])

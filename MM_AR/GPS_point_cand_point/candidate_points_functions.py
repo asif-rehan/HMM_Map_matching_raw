@@ -60,9 +60,3 @@ def list_cand_point_constructor(shapely_buffer, shapely_point, timestamp,
             except StopIteration:
                 rec = False
     return list_cand_pt
-"""
-def OJ_emis_prob(line, shapely_point, shapely_buffer):
-    coord = list(line.intersection(shapely_buffer).coords)
-    for x 
-    
-"""

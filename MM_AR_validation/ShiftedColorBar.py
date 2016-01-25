@@ -1,7 +1,7 @@
 '''
 Created on Jun 15, 2015
 
-@author: http://stackoverflow.com/users/325565/joe-kington
+@author: Joe Kington http://stackoverflow.com/users/325565/joe-kington
 '''
 import numpy as np
 import matplotlib.pyplot as plt

@@ -17,7 +17,7 @@ this_dir =  os.path.dirname(__file__)
 #                                            time.localtime()), 
 #                                            'orng_20141014'), 'w')
 
-#tart_time = time.time()
+#start_time = time.time()
 
 def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id, 
             gps_mean=0, gps_std_dev=7, circ_radius=30,
@@ -32,9 +32,30 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
     Latitude, Longitude and Time stamp.  
 
     Parameters
-    ==========
+    ----------
     lon_col_id, lat_col_id, timestamp_col_id  are the column numbers counting 
     from left column as zero
+
+    circular_radius : 27m radius captures 99.9+% probability, rounded upwards to 30m
+
+    gps_std_dev : depends upon the assumed noise distribution of the GPS signal
+                    Here, circular_radius = 27m captures 99.9+% probability,  
+                    which is 4.24*sigma 
+                    So, 4.24*gps_std_dev = 27m =~ circular_radius, 
+                    So gps_std_dev = 30/4.24 = 7m
+    
+    beta : the scale parameter in the emission probability function
+    
+    Returns
+    -------
+    1. max_prob : log probability value for the selected trajectory(max values)
+    2. max_prob_path_dist : length of the map-matched path selected
+    3. edge_output_df : calculates 'road_id' which was traveled between 
+        two consecutive GPS points and the 'length' is the distance in-between
+    4. node_output_df : series of points to visualize the path. 
+        The node series includes projection of the GPS points on the links and 
+        the intersection nodes if there is any of them between two 
+        consecutive GPS points
     
     Known implementation limitations
     =================================
@@ -298,12 +319,10 @@ def Viterbi(datafile, lon_col_id, lat_col_id, timestamp_col_id,
         return max_prob, max_prob_path_dist,   \
                 node_output_df, edge_output_df
     
-    except UnboundLocalError:
-#        print 'Stationary object'
+    except UnboundLocalError:  #print 'Stationary object'
         return None
         
     #assumption: no tied value for likelihood calculation
-
 #print "--- {0} seconds ---".format(time.time() - start_time)
 
 if __name__ == '__main__':

@@ -1,7 +1,10 @@
 import csv
 
 def read_data_point(datafile, lon_col_id, lat_col_id, timestamp_col_id):
-    '''Generator object creating GPS Point'''
+    '''Generator object creating GPS Points,
+    lon_col_id counted from left-most column in the input GPS trajectory file
+    This count starts from 0
+    '''
     csvfile = open(datafile, 'rb')
     
     
@@ -20,7 +23,7 @@ def read_data_point(datafile, lon_col_id, lat_col_id, timestamp_col_id):
             #for col in row:
             #order in csv file 
             #for 20140307.csv     ['lat', 'lon', 'ele', 'time', 'course', 'speed', 'src', 'sat', 'hdop']
-            
+ 
             yield (row[lon_col_id], row[lat_col_id],row[timestamp_col_id])
             
             #colnum += 1                

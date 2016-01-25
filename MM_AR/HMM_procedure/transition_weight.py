@@ -41,8 +41,8 @@ class TransitionWeight(object):
  
     def shortest_path_diff_road(self, cand_pt1, cand_pt2, G, shapefile):
         '''
-        shortest path length in meter
-        shortest path results in sequence of node sequence forming the shortest
+        shortest path length in meter if two GPS points are NOT on same link
+        shortest path results in a sequence of nodes forming the shortest
         path
         '''
         cp1_e_n_d = self.end_nodes_dist(cand_pt1, shapefile)
@@ -120,7 +120,11 @@ class TransitionWeight(object):
         return sd, sp_nodes, sp_rd_id_len    
     
     def shortest_path_same_road(self, cand_pt1, cand_pt2, G, shapefile):
-        cp1_e_n_d = self.end_nodes_dist(cand_pt1, shapefile)
+        '''
+        shortest path length in meter if two GPS points ARE on the same link
+        shortest path results in a sequence of nodes forming the shortest
+        path
+        '''cp1_e_n_d = self.end_nodes_dist(cand_pt1, shapefile)
         cp2_e_n_d = self.end_nodes_dist(cand_pt2, shapefile)
         shortest_path_length = abs(cp1_e_n_d[0]['dist']
                                                - cp2_e_n_d[0]['dist'])
