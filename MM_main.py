@@ -4,7 +4,7 @@ from MM_AR.HMM_procedure.transition_weight \
 import pickle as pkl
 import numpy as np
 import pandas as pd
-from MM_AR.HMM_procedure.ReadFile import read_data_point
+from MM_AR.HMM_procedure.read_file import read_data_point
 #import time
 #import sys
 import os
